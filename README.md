@@ -3,7 +3,8 @@ This tool functions similarly to SearchSploit, allowing to search for known vuln
 
 # How to
 ```
-pip3 install -r requirements
+pip3 install -r requirements.txt
+
 python3 cveseeker.py <keywords>
 python3 cveseeker.py windows smbv1
 python3 cveseeker.py windows remote code execution
