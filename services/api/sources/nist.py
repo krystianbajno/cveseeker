@@ -40,14 +40,14 @@ class NistAPI(Source):
             vulnerable_components = []
             configurations = cve_data.get("configurations", {})
             
-            if isinstance(configurations, dict):  # Handle case where configurations is a dictionary
+            if isinstance(configurations, dict):
                 nodes = configurations.get("nodes", [])
                 for node in nodes:
                     for cpe_match in node.get("cpeMatch", []):
                         if cpe_match.get("vulnerable", False):
                             vulnerable_components.append(cpe_match.get("criteria", DEFAULT_VALUES["url"]))
 
-            elif isinstance(configurations, list):  # Handle case where configurations is a list
+            elif isinstance(configurations, list):
                 for config in configurations:
                     nodes = config.get("nodes", [])
                     for node in nodes:

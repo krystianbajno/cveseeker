@@ -16,7 +16,7 @@ def main():
     
     search_provider = SearchProvider()
     search_service = search_provider.make_service_api()
-    results = search_service.search(keywords)
+    search_service.search(keywords)
     
 if __name__ == "__main__":
     main()
