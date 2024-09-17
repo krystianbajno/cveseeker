@@ -12,15 +12,15 @@ python3 cveseeker.py cve-2024
 ```
 
 # Sources
-- www.cisa.gov
-- www.cvedetails.com
-- cvefeed.io
-- www.exploit-db.com
-- github.com
-- services.nvd.nist.gov
-- www.opencve.io
-- packetstormsecurity.com
-- www.rapid7.com
-- security.snyk.io
-- vuldb.com
-- vulners.com
+- www.cisa.gov (WIP)
+- www.cvedetails.com (WIP)
+- cvefeed.io (WIP)
+- www.exploit-db.com (WIP)
+- github.com  (WIP)
+- services.nvd.nist.gov (IMPLEMENTED)
+- www.opencve.io (WIP)
+- packetstormsecurity.com (WIP)
+- www.rapid7.com (WIP)
+- security.snyk.io (WIP)
+- vuldb.com (WIP)
+- vulners.com (WIP)
