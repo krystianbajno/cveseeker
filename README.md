@@ -18,7 +18,6 @@ python3 cveseeker.py cve-2024
 - www.cvedetails.com (WIP)
 - cvefeed.io (WIP)
 - www.exploit-db.com (WIP)
-- github.com  (WIP)
 - services.nvd.nist.gov (IMPLEMENTED)
 - www.opencve.io (WIP)
 - packetstormsecurity.com (WIP)
@@ -26,3 +25,5 @@ python3 cveseeker.py cve-2024
 - security.snyk.io (WIP)
 - vuldb.com (WIP)
 - vulners.com (WIP)
+- github.com  (WIP)
+- [CVEProject](https://github.com/CVEProject) (WIP)
