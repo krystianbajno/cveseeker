@@ -1,4 +1,4 @@
-# CVESeeker
+# cveseeker
 This tool functions similarly to SearchSploit, allowing to search for known vulnerabilities by utilizing keywords and integrating multiple online services.
 
 # Sources
