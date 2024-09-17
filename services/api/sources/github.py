@@ -1,1 +1,1 @@
-# https://github.com/advisories?query=type%3Areviewed
+# https://github.com/
