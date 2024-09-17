@@ -2,7 +2,7 @@
 This tool functions similarly to SearchSploit, allowing to search for known vulnerabilities by utilizing keywords and integrating multiple online services.
 
 # How to
-```
+```bash
 pip3 install -r requirements.txt
 
 python3 cveseeker.py <keywords>
