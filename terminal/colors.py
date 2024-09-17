@@ -1,0 +1,5 @@
+RESET = "\033[0m"
+RED = "\033[91m"
+GREEN = "\033[92m"
+YELLOW = "\033[93m"
+BLACK_ON_WHITE = "\033[30;47m"

@@ -7,12 +7,11 @@ class SearchManager:
         self.sources = sources
         
     def search(self, keywords):
-        # todo async
         results = []
         for source in self.sources:
-            # todo print who
-            source.search(keywords)
-            # todo print results
-            
+                vulnerabilities = source.search(keywords)
+                for vulnerability in vulnerabilities:
+                    print(vulnerability)
+        
         return results
         

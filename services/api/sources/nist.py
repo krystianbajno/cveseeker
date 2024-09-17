@@ -1,73 +1,70 @@
-# https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch=Microsoft
-from typing import List
 import httpx
+from typing import List
 
 from models.vulnerability import Vulnerability
 from services.api.source import Source
+from services.vulnerability_factory import VulnerabilityFactory, DEFAULT_VALUES
 
 class NistAPI(Source):
     def __init__(self):
         self.url = "https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch="
     
-    def search(self, keywords) -> List[Vulnerability]:
+    def search(self, keywords: List[str]) -> List[Vulnerability]:
         search_string = " ".join(keywords)
-        res = httpx.get(f"{self.url}{search_string}")
-        print(res.text)
+        response = httpx.get(f"{self.url}{search_string}")
+        
+        if response.status_code != 200:
+            return []
 
-"""
-{
-   "resultsPerPage":17,
-   "startIndex":0,
-   "totalResults":17,
-   "format":"NVD_CVE",
-   "version":"2.0",
-   "timestamp":"2024-09-17T17:21:06.003",
-   "vulnerabilities":[
-      {
-         "cve":{
-            "id":"CVE-2012-1891",
-            "sourceIdentifier":"secure@microsoft.com",
-            "published":"2012-07-10T21:55:06.150",
-            "lastModified":"2023-12-07T18:38:56.693",
-            "vulnStatus":"Modified",
-            "cveTags":[
-               
-            ],
-            "descriptions":[
-               {
-                  "lang":"en",
-                  "value":"Heap-based buffer overflow in Microsoft Data Access Components (MDAC) 2.8 SP1 and SP2 and Windows Data Access Components (WDAC) 6.0 allows remote attackers to execute arbitrary code via crafted XML data that triggers access to an uninitialized object in memory, aka \"ADO Cachesize Heap Overflow RCE Vulnerability.\""
-               },
-               {
-                  "lang":"es",
-                  "value":"Desbordamiento de búfer basado en memoria dinámica en Microsoft Data Access Components (MDAC) v2.8 SP1 y SP2 y Windows Data Access Components (WDAC) v6.0, permite a atacantes remotos ejecutar código arbitrario a través de datos XML manipulados que desencadenan el acceso a un objeto no inicializado en la memoria, también conocido como \"ADO Cachesize Heap Overflow RCE Vulnerability.\""
-               }
-            ],
-            "metrics":{
-               "cvssMetricV2":[
-                  {
-                     "source":"nvd@nist.gov",
-                     "type":"Primary",
-                     "cvssData":{
-                        "version":"2.0",
-                        "vectorString":"AV:N\/AC:M\/Au:N\/C:C\/I:C\/A:C",
-                        "accessVector":"NETWORK",
-                        "accessComplexity":"MEDIUM",
-                        "authentication":"NONE",
-                        "confidentialityImpact":"COMPLETE",
-                        "integrityImpact":"COMPLETE",
-                        "availabilityImpact":"COMPLETE",
-                        "baseScore":9.3
-                     },
-                     "baseSeverity":"HIGH",
-                     "exploitabilityScore":8.6,
-                     "impactScore":10.0,
-                     "acInsufInfo":false,
-                     "obtainAllPrivilege":false,
-                     "obtainUserPrivilege":false,
-                     "obtainOtherPrivilege":false,
-                     "userInteractionRequired":true
-                  }
-               ]
-            },
-"""
+        data = response.json()
+        vulnerabilities = []
+        
+        for vulnerability in data.get("vulnerabilities", []):
+            cve_data = vulnerability.get("cve", {})
+            metrics = cve_data.get("metrics", {})
+            
+            cvss_v2_data = None
+            base_severity = DEFAULT_VALUES["base_severity"]
+            base_score = DEFAULT_VALUES["base_score"]
+            
+            if "cvssMetricV2" in metrics:
+                cvss_v2 = metrics["cvssMetricV2"][0]
+                cvss_v2_data = cvss_v2.get("cvssData", {})
+                base_score = str(cvss_v2_data.get("baseScore", DEFAULT_VALUES["base_score"]))
+                base_severity = cvss_v2.get("baseSeverity", DEFAULT_VALUES["base_severity"])
+            
+            id = cve_data.get("id", DEFAULT_VALUES["id"])
+            reference_urls = [ref.get("url", DEFAULT_VALUES["url"]) for ref in cve_data.get("references", [])]
+            description = cve_data.get("descriptions", [{"value": DEFAULT_VALUES["description"]}])[0].get("value", DEFAULT_VALUES["description"])
+            
+            vulnerable_components = []
+            configurations = cve_data.get("configurations", {})
+            
+            if isinstance(configurations, dict):  # Handle case where configurations is a dictionary
+                nodes = configurations.get("nodes", [])
+                for node in nodes:
+                    for cpe_match in node.get("cpeMatch", []):
+                        if cpe_match.get("vulnerable", False):
+                            vulnerable_components.append(cpe_match.get("criteria", DEFAULT_VALUES["url"]))
+
+            elif isinstance(configurations, list):  # Handle case where configurations is a list
+                for config in configurations:
+                    nodes = config.get("nodes", [])
+                    for node in nodes:
+                        for cpe_match in node.get("cpeMatch", []):
+                            if cpe_match.get("vulnerable", False):
+                                vulnerable_components.append(cpe_match.get("criteria", DEFAULT_VALUES["url"]))
+
+            vulnerabilities.append(
+                VulnerabilityFactory.make(
+                    id=id,
+                    source=self,
+                    reference_urls=reference_urls,
+                    base_score=base_score,
+                    base_severity=base_severity,
+                    description=description,
+                    vulnerable_components=vulnerable_components
+                )
+            )
+        
+        return vulnerabilities
