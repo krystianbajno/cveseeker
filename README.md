@@ -11,6 +11,7 @@ python3 cveseeker.py <keywords>
 python3 cveseeker.py windows smbv1
 python3 cveseeker.py windows remote code execution
 python3 cveseeker.py cve-2024
+python3 cveseeker.py cve-2024 --max-per-provider # max results per provider
 ```
 
 # Sources
@@ -20,7 +21,7 @@ python3 cveseeker.py cve-2024
 - www.exploit-db.com (WIP)
 - services.nvd.nist.gov (IMPLEMENTED)
 - www.opencve.io (WIP)
-- packetstormsecurity.com (WIP)
+- packetstormsecurity.com (IMPLEMENTED)
 - www.rapid7.com (WIP)
 - security.snyk.io (WIP)
 - vuldb.com (WIP)
