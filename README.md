@@ -14,7 +14,7 @@ python3 cveseeker.py windows remote code execution
 python3 cveseeker.py cve-2024
 python3 cveseeker.py cve-2024 --max-per-provider 2000 # max results per provider, default 100
 python3 cveseeker.py cve-2024 --report # generate CSV report
-python3 cveseeker.py windows --playwright # use playwright to scrap more providers
+python3 cveseeker.py windows --playwright # utilize playwright to use more sources
 ```
 
 # Sources

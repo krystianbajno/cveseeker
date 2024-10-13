@@ -29,7 +29,7 @@ def main():
         '--playwright',
         action="store_true",
         default=False,
-        help="Use more providers by utilizing Playwright for browser scraping."
+        help="Utilize Playwright to use more sources"
     )
     
     args = parser.parse_args()
