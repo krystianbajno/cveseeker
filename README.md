@@ -5,7 +5,8 @@ This tool functions similarly to SearchSploit, allowing to search for known vuln
 
 # How to
 ```bash
-pip3 install -r requirements.txt
+pip3 install -r requirements.txt # for basic scrapers
+bash ./install-playwright-linux.sh # to install playwright and utilize more providers
 
 python3 cveseeker.py <keywords>
 python3 cveseeker.py windows smbv1
@@ -13,6 +14,7 @@ python3 cveseeker.py windows remote code execution
 python3 cveseeker.py cve-2024
 python3 cveseeker.py cve-2024 --max-per-provider 2000 # max results per provider, default 100
 python3 cveseeker.py cve-2024 --report # generate CSV report
+python3 cveseeker.py windows --playwright # use playwright to scrap more providers
 ```
 
 # Sources

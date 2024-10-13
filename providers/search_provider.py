@@ -5,8 +5,9 @@ from services.api.sources.packetstormsecurity import PacketStormSecurityAPI
 from services.search_manager import SearchManager
 
 class SearchProvider():
-    def __init__(self):
+    def __init__(self, playwright_enabled=False):
         self.search_service: SearchManager = None
+        self.playwright_enabled = playwright_enabled
         
     def make_service_api(self) -> SearchManager:
         if self.search_service == None:
@@ -15,11 +16,17 @@ class SearchProvider():
         return self.search_service
     
     def boot(self):
+        
         providers = [
             NistAPI(),
             PacketStormSecurityAPI(),
             OpenCVEAPI(),
             ExploitDBAPI()
         ]
+        
+        if self.playwright_enabled:
+            playwright_providers = []
+
+            providers.extend(playwright_providers)
 
         self.search_service = SearchManager(providers)

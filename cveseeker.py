@@ -25,11 +25,18 @@ def main():
         help="Generate CSV report"
     )
     
+    parser.add_argument(
+        '--playwright',
+        action="store_true",
+        default=False,
+        help="Use more providers by utilizing Playwright for browser scraping."
+    )
+    
     args = parser.parse_args()
 
     keywords = args.keywords
     
-    search_provider = SearchProvider()
+    search_provider = SearchProvider(playwright_enabled=args.playwright)
     search_service = search_provider.make_service_api()
     
     results = search_service.search(keywords, args.max_per_provider)
