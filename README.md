@@ -3,7 +3,7 @@ This tool functions similarly to SearchSploit, allowing to search for known vuln
 
 <img src="https://raw.githubusercontent.com/krystianbajno/krystianbajno/main/img/cveseeker.png"/>
 
-# How to
+# How to use
 ```bash
 pip3 install -r requirements.txt # for basic scrapers
 bash ./install-playwright-linux.sh # to install playwright and utilize more providers
