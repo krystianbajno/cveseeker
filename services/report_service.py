@@ -12,21 +12,21 @@ class ReportService:
             writer = csv.writer(file)
 
             writer.writerow([
-                "ID", "Date", "Source", "URL", "Reference URLs", "Base Score", "Base Severity",
-                "Title", "Description", "Vulnerable Components", "Tags",
+                "ID", "Date", "Base Score", "Base Severity", "URL", "Title", "Description", "Source", "Reference URLs",
+                 "Vulnerable Components", "Tags",
             ])
 
             for vulnerability in vulnerabilities:
                 writer.writerow([
                     vulnerability.id.replace('\n', ' '),
                     vulnerability.date,
-                    vulnerability.source.__class__.__name__ if vulnerability.source else "",
-                    vulnerability.url,
-                    ', '.join(vulnerability.reference_urls).replace('\n', ' '),
                     vulnerability.base_score,
                     vulnerability.base_severity,
+                    vulnerability.url,
                     vulnerability.title.replace('\n', ' '),
                     vulnerability.description.replace('\n', ' '),
-                    ', '.join(vulnerability.vulnerable_components).replace('\n', ' '),
-                    ', '.join(vulnerability.tags).replace('\n', ' '),
+                    vulnerability.source.__class__.__name__ if vulnerability.source else "",
+                    ';'.join(vulnerability.reference_urls).replace('\n', ' '),
+                    ';'.join(vulnerability.vulnerable_components).replace('\n', ' '),
+                    ';'.join(vulnerability.tags).replace('\n', ' '),
                 ])
