@@ -1,5 +1,6 @@
 from typing import List
 from services.api.source import Source
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 class SearchManager:
     def __init__(self, sources: List[Source]):
@@ -7,15 +8,15 @@ class SearchManager:
         
     def search(self, keywords, max_results):
         results = []
-        for source in self.sources:
+
+        with ThreadPoolExecutor() as executor:
+            futures = [executor.submit(source.search, keywords, max_results) for source in self.sources]
             
-            vulnerabilities = source.search(keywords, max_results)
-            
-            for vulnerability in vulnerabilities:
-                results.append(vulnerability)
-                        
-        for result in results:
-            print(result)
- 
-        return results
+            for future in as_completed(futures):
+                try:
+                    vulnerabilities = future.result()
+                    results.extend(vulnerabilities)
+                except Exception as e:
+                    print(f"An error occurred: {e}")
         
+        return results
