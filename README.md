@@ -26,6 +26,6 @@ python3 cveseeker.py cve-2024 --report # generate CSV report
 - www.rapid7.com (WIP)
 - security.snyk.io (WIP)
 - vuldb.com (WIP)
-- vulners.com (WIP)
+- [vulners.com](https://vulners.com/search) (WIP)
 - github.com  (WIP)
 - [CVEProject](https://github.com/CVEProject) (WIP)
