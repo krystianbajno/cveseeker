@@ -1,5 +1,6 @@
 import argparse
 from providers.search_provider import SearchProvider
+from services.report_service import ReportService
 
 def main():
     parser = argparse.ArgumentParser(description="Search for vulnerabilities using keywords.")
@@ -17,13 +18,27 @@ def main():
         default=100
     )
     
+    parser.add_argument(
+        '--report',
+        action="store_true",
+        default=False,
+        help="Generate CSV report"
+    )
+    
     args = parser.parse_args()
 
     keywords = args.keywords
     
     search_provider = SearchProvider()
     search_service = search_provider.make_service_api()
-    search_service.search(keywords, args.max_per_provider)
+    
+    results = search_service.search(keywords, args.max_per_provider)
+    
+    for result in results:
+        print(result)
+
+    if args.report:
+        ReportService.write_to_csv(results, keywords)
     
 if __name__ == "__main__":
     main()

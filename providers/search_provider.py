@@ -1,4 +1,5 @@
 from services.api.sources.nist import NistAPI
+from services.api.sources.opencve import OpenCVEAPI
 from services.api.sources.packetstormsecurity import PacketStormSecurityAPI
 from services.search_manager import SearchManager
 
@@ -15,7 +16,8 @@ class SearchProvider():
     def boot(self):
         providers = [
             NistAPI(),
-            PacketStormSecurityAPI()
+            PacketStormSecurityAPI(),
+            OpenCVEAPI()
         ]
 
         self.search_service = SearchManager(providers)
