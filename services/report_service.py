@@ -26,9 +26,9 @@ class ReportService:
                     vulnerability.url,
                     vulnerability.title.replace('\n', ' '),
                     vulnerability.description.replace('\n', ' '),
-                    ';'.join(vulnerability.reference_urls).replace('\n', ' '),
-                    ';'.join(vulnerability.vulnerable_components).replace('\n', ' '),
-                    ';'.join(vulnerability.tags).replace('\n', ' '),
+                    ' ; '.join(vulnerability.reference_urls).replace('\n', ' '),
+                    ' ; '.join(vulnerability.vulnerable_components).replace('\n', ' '),
+                    ' ; '.join(vulnerability.tags).replace('\n', ' '),
                 ])
                 
         print(f"[*] CSV report saved to {filename}.")
