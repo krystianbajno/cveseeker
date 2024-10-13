@@ -28,6 +28,6 @@ python3 cveseeker.py windows --playwright # utilize playwright to use more sourc
 - [www.rapid7.com](https://www.rapid7.com) (WIP)
 - [security.snyk.io](https://security.snyk.io) (WIP)
 - [vuldb.com](https://vuldb.com) (WIP)
-- [vulners.com](https://vulners.com/search) (WIP)
+- [vulners.com](https://vulners.com/search) (WIP, PLAYWRIGHT)
 - [github.com](https://github.com)  (WIP)
 - [github.com/trickest/cve](https://github.com/search?q=repo%3Atrickest%2Fcve%20cve-2024&type=code)  (WIP - SCRAP, PARSE MD, ENRICH)
