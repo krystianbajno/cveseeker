@@ -73,7 +73,6 @@ class NistAPI(Source):
 
                 reference_urls = [ref.get("url", DEFAULT_VALUES["url"]) for ref in cve_data.get("references", [])]
                 description = cve_data.get("descriptions", [{"value": DEFAULT_VALUES["description"]}])[0].get("value", DEFAULT_VALUES["description"])
-                title = "".join(description.split(".")[:2])
                 
                 vulnerable_components = []
                 configurations = cve_data.get("configurations", {})
@@ -96,7 +95,6 @@ class NistAPI(Source):
                 vulnerabilities.append(
                     VulnerabilityFactory.make(
                         id=id,
-                        title=title,
                         source=self,
                         date=date,
                         reference_urls=reference_urls,

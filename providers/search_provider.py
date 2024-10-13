@@ -1,3 +1,4 @@
+from services.api.sources.exploitdb import ExploitDBAPI
 from services.api.sources.nist import NistAPI
 from services.api.sources.opencve import OpenCVEAPI
 from services.api.sources.packetstormsecurity import PacketStormSecurityAPI
@@ -17,7 +18,8 @@ class SearchProvider():
         providers = [
             NistAPI(),
             PacketStormSecurityAPI(),
-            OpenCVEAPI()
+            OpenCVEAPI(),
+            ExploitDBAPI()
         ]
 
         self.search_service = SearchManager(providers)

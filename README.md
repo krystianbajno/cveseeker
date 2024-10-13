@@ -19,7 +19,7 @@ python3 cveseeker.py cve-2024 --report # generate CSV report
 - www.cisa.gov (WIP)
 - www.cvedetails.com (WIP)
 - cvefeed.io (WIP)
-- www.exploit-db.com (WIP)
+- www.exploit-db.com (IMPLEMENTED)
 - services.nvd.nist.gov (IMPLEMENTED)
 - www.opencve.io (IMPLEMENTED)
 - packetstormsecurity.com (IMPLEMENTED)
