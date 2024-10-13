@@ -30,3 +30,5 @@ class ReportService:
                     ';'.join(vulnerability.vulnerable_components).replace('\n', ' '),
                     ';'.join(vulnerability.tags).replace('\n', ' '),
                 ])
+                
+        print(f"[*] CSV report saved to {filename}.")
