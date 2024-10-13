@@ -1,3 +1,4 @@
+import datetime
 from typing import List
 from services.api.source import Source
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -19,4 +20,6 @@ class SearchManager:
                 except Exception as e:
                     print(f"An error occurred: {e}")
         
+        results.sort(key=lambda result: datetime.datetime.strptime(result.date, "%Y-%m-%d"))
+
         return results

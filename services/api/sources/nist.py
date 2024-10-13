@@ -1,7 +1,7 @@
-import datetime
 import math
 import httpx
 from typing import List
+from dateutil import parser as dateutil_parser
 
 from models.vulnerability import Vulnerability
 from services.api.source import Source
@@ -67,11 +67,10 @@ class NistAPI(Source):
                 id = cve_data.get("id", DEFAULT_VALUES["id"])
                 
                 date_text = cve_data.get("published", DEFAULT_VALUES["date"])
-                try:
-                    date_posted = datetime.datetime.strptime(date_text, "%b %d, %Y").strftime('%Y-%m-%d')
-                except ValueError:
-                    date_posted = date_text    
-                
+
+                parsed_date = dateutil_parser.parse(date_text)
+                date = parsed_date.strftime('%Y-%m-%d')
+
                 reference_urls = [ref.get("url", DEFAULT_VALUES["url"]) for ref in cve_data.get("references", [])]
                 description = cve_data.get("descriptions", [{"value": DEFAULT_VALUES["description"]}])[0].get("value", DEFAULT_VALUES["description"])
                 title = "".join(description.split(".")[:2])
@@ -99,7 +98,7 @@ class NistAPI(Source):
                         id=id,
                         title=title,
                         source=self,
-                        date=date_posted,
+                        date=date,
                         reference_urls=reference_urls,
                         base_score=base_score,
                         base_severity=base_severity,

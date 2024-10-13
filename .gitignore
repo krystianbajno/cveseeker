@@ -1,4 +1,7 @@
 # Byte-compiled / optimized / DLL files
+.DS_Store
+cveseeker_*_report.csv
+
 __pycache__/
 *.py[cod]
 *$py.class
