@@ -12,8 +12,7 @@ class ReportService:
             writer = csv.writer(file)
 
             writer.writerow([
-                "ID", "Date", "Source", "Base Score", "Base Severity", "URL", "Title", "Description", "Reference URLs",
-                 "Vulnerable Components", "Tags",
+                "ID", "Date", "Source", "Base Score", "Base Severity", "Title", "Description", "URL", "Reference URLs", "Vulnerable Components", "Tags",
             ])
 
             for vulnerability in vulnerabilities:
