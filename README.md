@@ -30,3 +30,4 @@ python3 cveseeker.py windows --playwright # utilize playwright to use more sourc
 - [vuldb.com](https://vuldb.com) (WIP)
 - [vulners.com](https://vulners.com/search) (WIP)
 - [github.com](https://github.com)  (WIP)
+- [github.com/trickest/cve](https://github.com/search?q=repo%3Atrickest%2Fcve%20cve-2024&type=code)  (WIP)
