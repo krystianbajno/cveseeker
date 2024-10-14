@@ -1,6 +1,5 @@
 import csv
 from typing import List
-
 from models.vulnerability import Vulnerability
 
 class ReportService:
@@ -12,10 +11,13 @@ class ReportService:
             writer = csv.writer(file)
 
             writer.writerow([
-                "ID", "Date", "Source", "Base Score", "Base Severity", "Title", "Description", "URL", "Reference URLs", "Vulnerable Components", "Tags",
+                "ID", "Date", "Source", "Base Score", "Base Severity", "Title", "Description", "URL", "Reference URLs", 
+                "Vulnerable Components", "Tags", "CVSS Metrics", "Weaknesses", "Affected Versions", "Patched Versions"
             ])
 
             for vulnerability in vulnerabilities:
+                cvss_metrics_str = ' ; '.join([f"{key}: {value}" for key, value in vulnerability.cvss_metrics.items()])
+
                 writer.writerow([
                     vulnerability.id.replace('\n', ' '),
                     vulnerability.date,
@@ -28,6 +30,10 @@ class ReportService:
                     ' ; '.join(vulnerability.reference_urls).replace('\n', ' '),
                     ' ; '.join(vulnerability.vulnerable_components).replace('\n', ' '),
                     ' ; '.join(vulnerability.tags).replace('\n', ' '),
+                    cvss_metrics_str,
+                    ' ; '.join(vulnerability.weaknesses).replace('\n', ' '),
+                    vulnerability.affected_versions or "",
+                    vulnerability.patched_versions or ""
                 ])
                 
         print(f"[*] CSV report saved to {filename}.")
