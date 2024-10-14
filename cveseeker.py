@@ -29,7 +29,7 @@ def main():
         '--playwright',
         action="store_true",
         default=False,
-        help="Utilize Playwright to use more sources"
+        help="Utilize Playwright to use more sources (does nothing at the moment)"
     )
     
     args = parser.parse_args()

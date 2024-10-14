@@ -1,4 +1,5 @@
 from services.api.sources.exploitdb import ExploitDBAPI
+from services.api.sources.github_advisories import GitHubAdvisoryAPI
 from services.api.sources.nist import NistAPI
 from services.api.sources.opencve import OpenCVEAPI
 from services.api.sources.packetstormsecurity import PacketStormSecurityAPI
@@ -21,7 +22,8 @@ class SearchProvider():
             NistAPI(),
             PacketStormSecurityAPI(),
             OpenCVEAPI(),
-            ExploitDBAPI()
+            ExploitDBAPI(),
+            GitHubAdvisoryAPI()
         ]
         
         if self.playwright_enabled:
