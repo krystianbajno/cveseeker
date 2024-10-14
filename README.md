@@ -1,12 +1,11 @@
 # cveseeker
-This tool functions similarly to SearchSploit, allowing to search for known vulnerabilities by utilizing keywords and integrating multiple online services.
+This tool functions similarly to SearchSploit, allowing to search for known vulnerabilities by utilizing keywords and integrating multiple online services. 
 
 <img src="https://raw.githubusercontent.com/krystianbajno/krystianbajno/main/img/cveseeker.png"/>
 
 # How to use
 ```bash
-pip3 install -r requirements.txt # for basic scrapers
-bash ./install-playwright-linux.sh # to install playwright and utilize more providers
+pip3 install -r requirements.txt
 
 python3 cveseeker.py <keywords>
 python3 cveseeker.py windows smbv1
