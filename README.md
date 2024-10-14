@@ -24,4 +24,5 @@ python3 cveseeker.py cve-2024 --report # generate CSV report
 - [www.cisa.gov](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) (WIP)
 - [www.rapid7.com](https://www.rapid7.com) (WIP)
 - [github.com](https://github.com)  (WIP)
+- [github.com advisories](https://github.com/advisories) (WIP)
 - [github.com/trickest/cve](https://github.com/search?q=repo%3Atrickest%2Fcve%20cve-2024&type=code) (WIP - SCRAP, PARSE MD, ENRICH)
