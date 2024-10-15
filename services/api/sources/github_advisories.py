@@ -7,7 +7,7 @@ import re
 
 from models.vulnerability import Vulnerability
 from services.api.source import Source
-from services.vulnerability_factory import VulnerabilityFactory, DEFAULT_VALUES
+from services.vulnerabilities.factories.vulnerability_factory import VulnerabilityFactory, DEFAULT_VALUES
 
 class GitHubAdvisoryAPI(Source):
     def __init__(self):
@@ -163,16 +163,6 @@ class GitHubAdvisoryAPI(Source):
                     for label in weakness_labels:
                         weaknesses.append(label.text.strip())
 
-            affected_versions = DEFAULT_VALUES['affected_versions']
-            patched_versions = DEFAULT_VALUES['patched_versions']
-            version_divs = advisory_soup.find_all('div', class_='float-left')
-            for div in version_divs:
-                h2_tag = div.find('h2')
-                if h2_tag and 'Affected versions' in h2_tag.text:
-                    affected_versions = div.find('div').text.strip()
-                elif h2_tag and 'Patched versions' in h2_tag.text:
-                    patched_versions = div.find('div').text.strip()
-
             vulnerable_components = []
             if package_name and package_name != DEFAULT_VALUES['vulnerable_components']:
                 vulnerable_components.append(package_name)
@@ -189,8 +179,6 @@ class GitHubAdvisoryAPI(Source):
                 vulnerable_components=vulnerable_components,
                 cvss_metrics=cvss_metrics,
                 weaknesses=weaknesses,
-                affected_versions=affected_versions,
-                patched_versions=patched_versions
             )
             return vulnerability
 

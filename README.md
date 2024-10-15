@@ -12,7 +12,7 @@ python3 cveseeker.py windows smbv1
 python3 cveseeker.py windows remote code execution
 python3 cveseeker.py cve-2024
 python3 cveseeker.py cve-2024 --max-per-provider 2000 # max results per provider, default 100
-python3 cveseeker.py cve-2024 --report # generate CSV report
+python3 cveseeker.py cve-2024 --report # generate CSV, JSON and HTML report
 ```
 
 # Sources

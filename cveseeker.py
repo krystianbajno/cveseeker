@@ -1,6 +1,7 @@
 import argparse
 from providers.search_provider import SearchProvider
-from services.report_service import ReportService
+from services.vulnerability_intelligence.reports.vulnerability_intelligence_report_service import VulnerabilityIntelligenceReportService
+from services.vulnerability_intelligence.printers.vulnerability_intelligence_printer import VulnerabilityIntelligencePrinter
 
 def main():
     parser = argparse.ArgumentParser(description="Search for vulnerabilities using keywords.")
@@ -41,11 +42,17 @@ def main():
     
     results = search_service.search(keywords, args.max_per_provider)
     
-    for result in results:
-        print(result)
+    VulnerabilityIntelligencePrinter.print(results)
+
+    filename_csv = f'cveseeker_{"_".join(keywords)}_report.csv'
+    filename_json = f'cveseeker_{"_".join(keywords)}_report.json'
+    filename_html = f'cveseeker_{"_".join(keywords)}_report.html'
 
     if args.report:
-        ReportService.write_to_csv(results, keywords)
+        VulnerabilityIntelligenceReportService.generate_csv_report(results, filename_csv)
+        VulnerabilityIntelligenceReportService.generate_json_report(results, filename_json)
+        VulnerabilityIntelligenceReportService.generate_html_report(results, filename_html)
+
     
 if __name__ == "__main__":
     main()

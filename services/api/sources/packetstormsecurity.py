@@ -7,7 +7,7 @@ from typing import List
 
 from models.vulnerability import Vulnerability
 from services.api.source import Source
-from services.vulnerability_factory import VulnerabilityFactory
+from services.vulnerabilities.factories.vulnerability_factory import VulnerabilityFactory
 
 class PacketStormSecurityAPI(Source):
     def __init__(self):
