@@ -1,7 +1,7 @@
 # cveseeker
 This tool functions similarly to SearchSploit, allowing to search for known vulnerabilities by utilizing keywords and integrating multiple online services. 
 
-<img src="https://raw.githubusercontent.com/krystianbajno/krystianbajno/main/img/cveseeker.png"/>
+<img src="https://raw.githubusercontent.com/krystianbajno/krystianbajno/main/img/cveseekerino.png"/>
 
 # How to use
 ```bash
@@ -23,5 +23,15 @@ python3 cveseeker.py cve-2024 --report # generate CSV, JSON and HTML report
 - [github.com advisories](https://github.com/advisories) (IMPLEMENTED)
 - [www.cisa.gov](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) (WIP)
 - [www.rapid7.com](https://www.rapid7.com) (WIP)
+- [cve.mitre.org](https://cve.mitre.org/cve/search_cve_list.html) (WIP)
 - [github.com](https://github.com)  (WIP)
 - [github.com/trickest/cve](https://github.com/search?q=repo%3Atrickest%2Fcve%20cve-2024&type=code) (WIP - SCRAP, PARSE MD, ENRICH)
+
+# Reporting
+The tool supports formats such as JSON, CSV and HTML. It can generate HTML reports for nice review that can be printed as PDFs. 
+
+```bash
+python3 cveseeker.py smbghost --report
+```
+
+<img src="https://raw.githubusercontent.com/krystianbajno/krystianbajno/main/img/cveseekerino-html.png"/>
