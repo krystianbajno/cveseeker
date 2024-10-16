@@ -2,6 +2,7 @@ import argparse
 from providers.search_provider import SearchProvider
 from services.vulnerability_intelligence.reports.vulnerability_intelligence_report_service import VulnerabilityIntelligenceReportService
 from services.vulnerability_intelligence.printers.vulnerability_intelligence_printer import VulnerabilityIntelligencePrinter
+from terminal import logo
 
 def main():
     parser = argparse.ArgumentParser(description="Search for vulnerabilities using keywords.")
@@ -33,6 +34,8 @@ def main():
         help="Utilize Playwright to use more sources (does nothing at the moment)"
     )
     
+    logo.print_logo()
+
     args = parser.parse_args()
 
     keywords = args.keywords
