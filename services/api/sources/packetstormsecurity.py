@@ -110,7 +110,4 @@ class PacketStormSecurityAPI(Source):
             except:
                 break
 
-        if max_results:
-            return vulnerabilities[:max_results]
-    
         return vulnerabilities
