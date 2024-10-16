@@ -5,9 +5,7 @@ mottos = [
     "Shatter the vulnerabilities and scatter them to the winds.",
     "Keep your friends close and your vulnerabilities closer.",
     "Mirror, mirror on the wall, who’s the most vulnerable of them all?",
-    "Vulnerabilities are like onions, they have layers.",
-    "In space, no one can hear you scan.",
-    "Why so serious? It’s just a vulnerability scan.",
+    "Direct -> Collect -> Process -> Analyze -> Disseminate -> Feedback -> Repeat" 
 ]
 
 logo = f'''{RED}                                  __            
