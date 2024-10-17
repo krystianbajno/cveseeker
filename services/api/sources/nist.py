@@ -28,7 +28,7 @@ class NistAPI(Source):
         
         url = self.url + f"&resultsPerPage=1&startIndex=0&keywordSearch={search_string}"
                               
-        response = httpx.get(url)
+        response = httpx.get(url, timeout=15)
         
         if response.status_code != 200:
             return vulnerabilities
@@ -43,7 +43,7 @@ class NistAPI(Source):
         for i in range(2): 
             url = self.url + f"&resultsPerPage={results_per_page}&startIndex={pages - i}&keywordSearch={search_string}"
                         
-            response = httpx.get(url)
+            response = httpx.get(url, timeout=15)
             
             if response.status_code != 200:
                 return vulnerabilities
