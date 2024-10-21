@@ -54,7 +54,7 @@ def main():
     if args.report:
         VulnerabilityIntelligenceReportService.generate_csv_report(results, filename_csv)
         VulnerabilityIntelligenceReportService.generate_json_report(results, filename_json)
-        VulnerabilityIntelligenceReportService.generate_html_report(results, filename_html)
+        VulnerabilityIntelligenceReportService.generate_html_report(results, " ".join(keywords), filename_html)
 
     
 if __name__ == "__main__":

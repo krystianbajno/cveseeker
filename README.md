@@ -34,4 +34,4 @@ The tool supports formats such as JSON, CSV and HTML. It can generate HTML repor
 python3 cveseeker.py smbghost --report
 ```
 
-<img src="https://raw.githubusercontent.com/krystianbajno/krystianbajno/main/img/cveseekerino-html.png"/>
+<img src="https://raw.githubusercontent.com/krystianbajno/krystianbajno/main/img/cveseeker-html.png"/>
