@@ -21,6 +21,7 @@ python3 cveseeker.py cve-2024 --report # generate CSV, JSON and HTML report
 - [www.opencve.io](https://www.opencve.io) (IMPLEMENTED)
 - [www.packetstormsecurity.com](https://packetstormsecurity.com) (IMPLEMENTED)
 - [github.com advisories](https://github.com/advisories) (IMPLEMENTED)
+- [vulners.com](https://vulners.com/search) (IMPLEMENTED)
 - [www.cisa.gov](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) (WIP)
 - [www.rapid7.com](https://www.rapid7.com) (WIP)
 - [cve.mitre.org](https://cve.mitre.org/cve/search_cve_list.html) (WIP)
