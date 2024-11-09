@@ -1,0 +1,7 @@
+providers:
+  NistAPI: true
+  PacketStormSecurityAPI: true
+  OpenCVEAPI: true
+  ExploitDBAPI: true
+  GitHubAdvisoryAPI: true
+  VulnersAPI: true
