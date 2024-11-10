@@ -1,8 +1,8 @@
 providers:
-  NistAPI: true
+  NistAPI: false
   PacketStormSecurityAPI: true
   OpenCVEAPI: true
   ExploitDBAPI: true
-  GitHubAdvisoryAPI: true
+  GitHubAdvisoryAPI: false
   VulnersAPI: true
 enrichment: true

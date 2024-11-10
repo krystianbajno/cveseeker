@@ -70,7 +70,7 @@ class SearchManager:
             unique_descriptions = []
             seen_texts = set()
             for description in vuln_intelligence.descriptions:
-                truncated_text = description["text"][:1024].replace("\n", " ")
+                truncated_text = description["text"].replace("\n", " ")
                 if truncated_text not in seen_texts:
                     seen_texts.add(truncated_text)
                     description["text"] = truncated_text
