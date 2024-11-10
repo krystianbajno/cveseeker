@@ -31,6 +31,7 @@ class SearchProvider():
     def boot(self):
         config = self.load_config()
         providers_config = config.get('providers', {})
+        enrichment_config = config.get("enrichment", False)
         
         providers = []
         
@@ -48,7 +49,7 @@ class SearchProvider():
             playwright_providers = []
             providers.extend(playwright_providers)
         
-        self.search_service = SearchManager(providers)
+        self.search_service = SearchManager(providers, enrichment_enabled=enrichment_config)
         
     def load_config(self):
         try:

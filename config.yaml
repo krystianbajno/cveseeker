@@ -5,3 +5,4 @@ providers:
   ExploitDBAPI: true
   GitHubAdvisoryAPI: true
   VulnersAPI: true
+enrichment: true

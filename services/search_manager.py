@@ -14,12 +14,13 @@ from services.vulnerability_intelligence.processors.vulnerability_intelligence_p
 from typing import List
 
 class SearchManager:
-    def __init__(self, sources: List[Source], max_retries: int = 3, retry_delay: int = 5):
+    def __init__(self, sources: List[Source], enrichment_enabled=False, max_retries: int = 3, retry_delay: int = 5):
         self.sources = sources
         self.max_retries = max_retries
         self.retry_delay = retry_delay
         self._lock = threading.Lock()
         self._progress_counter = 0
+        self.enrichment_enabled = enrichment_enabled
 
     def search(self, keywords: List[str], max_results: int) -> List[VulnerabilityIntelligence]:
         collected_results = []
@@ -42,24 +43,42 @@ class SearchManager:
 
         print("[+] Collection process complete.")
 
-        processed_results = VulnerabilityIntelligenceProcessor.process(
+        results = VulnerabilityIntelligenceProcessor.process(
             vulnerabilities=collected_results,
             search_terms=keywords
         )
         
-        print("\n[*] Initiating enrichment process.")
+        if self.enrichment_enabled:
+            print("\n[*] Initiating enrichment process.")
 
-        enriched_results = self._perform_enrichment(processed_results)
+            results = self._perform_enrichment(results)
+            
+            print("[+] Enrichment process complete.")
+            
+        results = self._prepare_descriptions(results)
         
-        print("[+] Enrichment process complete.")
-
         self._reset_progress()
 
-        return enriched_results
+        return results
 
     def _perform_enrichment(self, vulnerability_intelligence_list: List[VulnerabilityIntelligence]) -> List[VulnerabilityIntelligence]:
         enrichment = VulnerabilityIntelligenceEnrichment(vulnerability_intelligence_list)
         return enrichment.enrich()
+    
+    def _prepare_descriptions(self, results):
+        for vuln_intelligence in results:
+            unique_descriptions = []
+            seen_texts = set()
+            for description in vuln_intelligence.descriptions:
+                truncated_text = description["text"][:1024].replace("\n", " ")
+                if truncated_text not in seen_texts:
+                    seen_texts.add(truncated_text)
+                    description["text"] = truncated_text
+                    unique_descriptions.append(description)
+
+            vuln_intelligence.descriptions = unique_descriptions
+            
+        return results
 
     def _collect_from_source_with_retries(self, source: Source, keywords: List[str], max_results: int) -> List[Vulnerability]:
         attempts = 0
