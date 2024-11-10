@@ -26,7 +26,7 @@ python3 cveseeker.py cve-2024 --report # generate CSV, JSON and HTML report
 - [www.rapid7.com](https://www.rapid7.com) (WIP)
 - [cve.mitre.org](https://cve.mitre.org/cve/search_cve_list.html) (WIP)
 - [github.com](https://github.com)  (WIP)
-- [github.com/trickest/cve](https://github.com/search?q=repo%3Atrickest%2Fcve%20cve-2024&type=code) (WIP - SCRAP, PARSE MD, ENRICH)
+- [github.com/trickest/cve](https://github.com/search?q=repo%3Atrickest%2Fcve%20cve-2024&type=code) (IMPLEMENTED)
 
 # Reporting
 The tool supports formats such as JSON, CSV and HTML. It can generate HTML reports for nice review that can be printed as PDFs. 
