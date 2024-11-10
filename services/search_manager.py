@@ -7,6 +7,12 @@ from models.vulnerability_intelligence import VulnerabilityIntelligence
 from services.api.source import Source
 from services.vulnerability_intelligence.processors.vulnerability_intelligence_processor import VulnerabilityIntelligenceProcessor
 
+from models.vulnerability import Vulnerability
+from models.vulnerability_intelligence import VulnerabilityIntelligence
+from services.vulnerability_intelligence.enrichment.vulnerability_intelligence_enrichment import VulnerabilityIntelligenceEnrichment
+from services.vulnerability_intelligence.processors.vulnerability_intelligence_processor import VulnerabilityIntelligenceProcessor
+from typing import List
+
 class SearchManager:
     def __init__(self, sources: List[Source], max_retries: int = 3, retry_delay: int = 5):
         self.sources = sources
@@ -15,7 +21,7 @@ class SearchManager:
         self._lock = threading.Lock()
         self._progress_counter = 0
 
-    def search(self, keywords: List[str], max_results: int) -> VulnerabilityIntelligence:
+    def search(self, keywords: List[str], max_results: int) -> List[VulnerabilityIntelligence]:
         collected_results = []
 
         print(f"[*] Initiating search for: \"{' '.join(keywords)}\" with a maximum of {max_results} results per source.\n")
@@ -40,10 +46,20 @@ class SearchManager:
             vulnerabilities=collected_results,
             search_terms=keywords
         )
+        
+        print("\n[*] Initiating enrichment process.")
+
+        enriched_results = self._perform_enrichment(processed_results)
+        
+        print("[+] Enrichment process complete.")
 
         self._reset_progress()
 
-        return processed_results
+        return enriched_results
+
+    def _perform_enrichment(self, vulnerability_intelligence_list: List[VulnerabilityIntelligence]) -> List[VulnerabilityIntelligence]:
+        enrichment = VulnerabilityIntelligenceEnrichment(vulnerability_intelligence_list)
+        return enrichment.enrich()
 
     def _collect_from_source_with_retries(self, source: Source, keywords: List[str], max_results: int) -> List[Vulnerability]:
         attempts = 0
@@ -63,7 +79,6 @@ class SearchManager:
                 print(f"[!] Error with source {source.__class__.__name__}, attempt {attempts}/{self.max_retries}. Retrying in {retry_delay} seconds...")
                 time.sleep(retry_delay)
                 retry_delay = retry_delay * 2
-
 
     def _increment_progress(self, source: Source, result_count: int):
         with self._lock:
