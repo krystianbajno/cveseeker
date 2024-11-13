@@ -4,5 +4,5 @@ providers:
   OpenCVEAPI: true
   ExploitDBAPI: true
   GitHubAdvisoryAPI: true
-  VulnersAPI: true
+  VulnersAPI: false
 enrichment: true
