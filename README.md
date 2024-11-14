@@ -1,4 +1,5 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b1231773dace4ee0849a0d5f779917f4)](https://app.codacy.com/gh/krystianbajno/cveseeker/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![CodeFactor](https://www.codefactor.io/repository/github/krystianbajno/cveseeker/badge)](https://www.codefactor.io/repository/github/krystianbajno/cveseeker)
 
 # cveseeker
 This tool functions similarly to SearchSploit, allowing to search for known vulnerabilities by utilizing keywords and integrating multiple online services. 
