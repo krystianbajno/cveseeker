@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/365697096f2b44548b9425a22b4426eb)](https://app.codacy.com/gh/krystianbajno/cveseeker?utm_source=github.com&utm_medium=referral&utm_content=krystianbajno/cveseeker&utm_campaign=Badge_Grade)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b1231773dace4ee0849a0d5f779917f4)](https://app.codacy.com/gh/krystianbajno/cveseeker/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 # cveseeker
