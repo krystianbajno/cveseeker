@@ -31,7 +31,6 @@ python3 cveseeker.py cve-2024 --critical --high --medium --low # include critica
 - [www.cisa.gov - KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) (IMPLEMENTED)
 - [www.rapid7.com](https://www.rapid7.com) (WIP)
 - [cve.mitre.org](https://cve.mitre.org/cve/search_cve_list.html) (WIP)
-- [github.com](https://github.com)  (WIP)
 - [github.com PoC](https://github.com/nomi-sec/PoC-in-GitHub)  (IMPLEMENTED)
 - [github.com advisories](https://github.com/advisories) (IMPLEMENTED)
 - [github.com/trickest/cve](https://github.com/search?q=repo%3Atrickest%2Fcve%20cve-2024&type=code) (IMPLEMENTED)
