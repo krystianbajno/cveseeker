@@ -63,7 +63,7 @@ class OpenCVEAPI(Source):
 
             vulnerabilities.append(VulnerabilityFactory.make(
                 id=cve_id,
-                source=self,
+                source=self.__class__.__name__,
                 url=f"https://app.opencve.io/cve/{cve_id}",
                 title=cve_id,
                 base_score=base_score,

@@ -19,7 +19,7 @@ class ReportService:
                 writer.writerow([
                     vulnerability.id.replace('\n', ' '),
                     vulnerability.date,
-                    vulnerability.source.__class__.__name__ if vulnerability.source else "",
+                    vulnerability.source if vulnerability.source else "",
                     vulnerability.base_score,
                     vulnerability.base_severity,
                     vulnerability.title.replace('\n', ' '),

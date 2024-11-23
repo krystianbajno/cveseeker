@@ -81,7 +81,7 @@ class VulnersAPI(Source):
                                 url = f"{self.base_url}/cve/{cve_id}"
                                 vulnerabilities[cve_id] = VulnerabilityFactory.make(
                                     id=cve_id,
-                                    source=self,
+                                    source=self.__class__.__name__,
                                     url=url,
                                     title=title,
                                     description=description,

@@ -169,7 +169,7 @@ class GitHubAdvisoryAPI(Source):
 
             vulnerability = VulnerabilityFactory.make(
                 id=vulnerability_id,
-                source=self,
+                source=self.__class__.__name__,
                 url=advisory_url,
                 date=date,
                 reference_urls=reference_urls,

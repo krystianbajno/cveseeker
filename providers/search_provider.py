@@ -1,5 +1,5 @@
 import yaml
-from services.search_manager import SearchManager
+from services.api.sources.cisa_kev import CISAKEVAPI
 
 from services.api.sources.exploitdb import ExploitDBAPI
 from services.api.sources.github_advisories import GitHubAdvisoryAPI
@@ -8,7 +8,12 @@ from services.api.sources.opencve import OpenCVEAPI
 from services.api.sources.packetstormsecurity import PacketStormSecurityAPI
 from services.api.sources.vulners import VulnersAPI
 
-class SearchProvider():
+from typing import Dict
+
+from services.search.search_manager import SearchManager
+from services.search.engine.progress import ProgressManager
+
+class SearchProvider:
     def __init__(self, playwright_enabled=False, config_file='config.yaml'):
         self.search_service: SearchManager = None
         self.playwright_enabled = playwright_enabled
@@ -21,17 +26,18 @@ class SearchProvider():
             'ExploitDBAPI': ExploitDBAPI,
             'GitHubAdvisoryAPI': GitHubAdvisoryAPI,
             'VulnersAPI': VulnersAPI,
+            "CISAKEVAPI": CISAKEVAPI
         }
         
     def make_service_api(self) -> SearchManager:
         if self.search_service is None:
             self.boot()
         return self.search_service
-        
+            
     def boot(self):
         config = self.load_config()
         providers_config = config.get('providers', {})
-        enrichment_config = config.get("enrichment", False)
+        enrichment_config = config.get("enrichment", {})
         
         providers = []
         
@@ -48,10 +54,11 @@ class SearchProvider():
         if self.playwright_enabled:
             playwright_providers = []
             providers.extend(playwright_providers)
+            
+        progress_manager = ProgressManager()
+        self.search_service = SearchManager(providers, enrichment_config, progress_manager=progress_manager)
         
-        self.search_service = SearchManager(providers, enrichment_enabled=enrichment_config)
-        
-    def load_config(self):
+    def load_config(self) -> Dict:
         try:
             with open(self.config_file, 'r') as f:
                 config = yaml.safe_load(f)
