@@ -63,6 +63,7 @@ class GitHubAdvisoryAPI(Source):
                 break
 
         self.session.close()
+        
         return vulnerabilities
 
     def process_advisory_element(self, element):
@@ -72,15 +73,16 @@ class GitHubAdvisoryAPI(Source):
                 return None
             title = title_tag.text.strip()
             advisory_href = title_tag['href']
+            
             advisory_url = f"https://github.com{advisory_href}"
             advisory_id = advisory_href.strip('/').split('/')[-1]
 
             severity_span = element.find('span', class_='Label')
             base_severity = severity_span.text.strip() if severity_span else DEFAULT_VALUES['base_severity']
-
+            
             cve_span = element.find('span', class_='text-bold')
             cve_id = cve_span.text.strip() if cve_span else None
-
+            
             mt1_div = element.find('div', class_='mt-1')
             package_name = None
             if mt1_div:
@@ -138,7 +140,7 @@ class GitHubAdvisoryAPI(Source):
             vulnerability_id = cve_id if cve_id and cve_id != DEFAULT_VALUES['id'] else advisory_id
 
             cvss_score = DEFAULT_VALUES['base_score']
-            cvss_metrics = {}
+            
             severity_section = advisory_soup.find('h3', text='Severity')
             if severity_section:
                 severity_container = severity_section.find_next('div')
@@ -146,13 +148,6 @@ class GitHubAdvisoryAPI(Source):
                     score_span = severity_container.find('span', class_='Button-label')
                     if score_span:
                         cvss_score = score_span.text.strip()
-                    metrics_div = severity_container.find('div', class_='d-flex flex-column mt-2 p-2 border rounded-2')
-                    if metrics_div:
-                        metric_items = metrics_div.find_all('div', class_='d-flex p-1 flex-justify-between')
-                        for item in metric_items:
-                            metric_name = item.contents[0].strip()
-                            metric_value = item.find('div').text.strip()
-                            cvss_metrics[metric_name] = metric_value
 
             weaknesses = []
             weaknesses_section = advisory_soup.find('h3', text='Weaknesses')
@@ -177,9 +172,9 @@ class GitHubAdvisoryAPI(Source):
                 base_severity=base_severity,
                 description=description,
                 vulnerable_components=vulnerable_components,
-                cvss_metrics=cvss_metrics,
                 weaknesses=weaknesses,
             )
+
             return vulnerability
 
         except Exception as e:
