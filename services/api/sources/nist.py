@@ -95,7 +95,7 @@ class NistAPI(Source):
                 vulnerabilities.append(
                     VulnerabilityFactory.make(
                         id=id,
-                        source=self,
+                        source=self.__class__.__name__,
                         date=date,
                         reference_urls=reference_urls,
                         base_score=base_score,

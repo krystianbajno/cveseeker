@@ -27,6 +27,11 @@ def main():
         help="Generate CSV report"
     )
     
+    parser.add_argument('--low', action='store_true', help='Include low severity vulnerabilities')
+    parser.add_argument('--medium', action='store_true', help='Include medium severity vulnerabilities')
+    parser.add_argument('--high', action='store_true', help='Include high severity vulnerabilities')
+    parser.add_argument('--critical', action='store_true', help='Include critical severity vulnerabilities')
+    
     parser.add_argument(
         '--playwright',
         action="store_true",
@@ -40,10 +45,14 @@ def main():
 
     keywords = args.keywords
     
-    search_provider = SearchProvider(playwright_enabled=args.playwright)
+    search_provider = SearchProvider(playwright_enabled=args.playwright, config_file='config.yaml')
     search_service = search_provider.make_service_api()
     
-    results = search_service.search(keywords, args.max_per_provider)
+    desired_severities = [
+        severity for severity in ['low', 'medium', 'high', 'critical'] if getattr(args, severity)
+    ]
+
+    results = search_service.search(keywords, args.max_per_provider, desired_severities=desired_severities)
     
     VulnerabilityIntelligencePrinter.print(results)
 

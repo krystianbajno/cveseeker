@@ -80,7 +80,7 @@ class PacketStormSecurityAPI(Source):
             vulnerabilities.append(
                 VulnerabilityFactory.make(
                     id=vuln_id,
-                    source=self,
+                    source=self.__class__.__name__,
                     url=self.base_url + url,
                     title=title,
                     description=description,

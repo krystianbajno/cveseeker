@@ -5,4 +5,10 @@ providers:
   ExploitDBAPI: true
   GitHubAdvisoryAPI: true
   VulnersAPI: false
-enrichment: true
+  CISAKEVAPI: true
+
+enrichment:
+  sources:
+    vulners: true
+    github: true
+    cisa_kev: true

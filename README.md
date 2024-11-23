@@ -18,6 +18,8 @@ python3 cveseeker.py windows remote code execution
 python3 cveseeker.py cve-2024
 python3 cveseeker.py cve-2024 --max-per-provider 2000 # max results per provider, default 100
 python3 cveseeker.py cve-2024 --report # generate CSV, JSON and HTML report
+python3 cveseeker.py cve-2024 --critical --high --medium --low # include critical, high, medium, and low severities
+
 ```
 
 # Sources
@@ -25,12 +27,12 @@ python3 cveseeker.py cve-2024 --report # generate CSV, JSON and HTML report
 - [services.nvd.nist.gov](https://services.nvd.nist.gov/rest/json/cves/2.0?noRejected) (IMPLEMENTED)
 - [www.opencve.io](https://www.opencve.io) (IMPLEMENTED)
 - [www.packetstormsecurity.com](https://packetstormsecurity.com) (IMPLEMENTED)
-- [github.com advisories](https://github.com/advisories) (IMPLEMENTED)
 - [vulners.com](https://vulners.com/search) (IMPLEMENTED)
-- [www.cisa.gov](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) (WIP)
+- [www.cisa.gov - KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) (IMPLEMENTED)
 - [www.rapid7.com](https://www.rapid7.com) (WIP)
 - [cve.mitre.org](https://cve.mitre.org/cve/search_cve_list.html) (WIP)
 - [github.com](https://github.com)  (WIP)
+- [github.com advisories](https://github.com/advisories) (IMPLEMENTED)
 - [github.com/trickest/cve](https://github.com/search?q=repo%3Atrickest%2Fcve%20cve-2024&type=code) (IMPLEMENTED)
 
 # Reporting

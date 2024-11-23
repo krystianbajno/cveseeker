@@ -1,5 +1,6 @@
 # Byte-compiled / optimized / DLL files
 .DS_Store
+cache/
 cveseeker_*_report.csv
 cveseeker_*_report.json
 cveseeker_*_report.html
