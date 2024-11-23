@@ -6,6 +6,7 @@ from services.api.sources.github_advisories import GitHubAdvisoryAPI
 from services.api.sources.nist import NistAPI
 from services.api.sources.opencve import OpenCVEAPI
 from services.api.sources.packetstormsecurity import PacketStormSecurityAPI
+from services.api.sources.rapid7 import RAPID7
 from services.api.sources.vulners import VulnersAPI
 
 from typing import Dict
@@ -26,7 +27,8 @@ class SearchProvider:
             'ExploitDBAPI': ExploitDBAPI,
             'GitHubAdvisoryAPI': GitHubAdvisoryAPI,
             'VulnersAPI': VulnersAPI,
-            "CISAKEVAPI": CISAKEVAPI
+            "CISAKEVAPI": CISAKEVAPI,
+            "RAPID7": RAPID7
         }
         
     def make_service_api(self) -> SearchManager:
