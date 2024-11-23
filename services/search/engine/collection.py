@@ -2,9 +2,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
 from typing import List
 from models.vulnerability import Vulnerability
-from models.vulnerability_intelligence import VulnerabilityIntelligence
 from services.api.source import Source
-from services.vulnerability_intelligence.enrichment.vulnerability_intelligence_enrichment_manager import VulnerabilityIntelligenceEnrichmentManager
 
 def collect_from_source_with_retries(manager, source: Source, keywords: List[str], max_results: int) -> List[Vulnerability]:
     attempts = 0
@@ -23,13 +21,6 @@ def collect_from_source_with_retries(manager, source: Source, keywords: List[str
             print(f"[!] Error with source {source.__class__.__name__}, attempt {attempts}. Retrying in {retry_delay} seconds...")
             time.sleep(retry_delay)
             retry_delay *= 2
-
-def is_enrichment_enabled(config: dict) -> bool:
-    return any(config.get('sources', {}).values())
-
-def perform_enrichment(vulnerabilities: List[VulnerabilityIntelligence], config: dict) -> List[VulnerabilityIntelligence]:
-    enrichment_manager = VulnerabilityIntelligenceEnrichmentManager(vulnerabilities, config)
-    return enrichment_manager.enrich()
 
 def collect_results(manager, keywords: List[str], max_results: int) -> List[Vulnerability]:
     collected_results = []

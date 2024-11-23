@@ -12,3 +12,4 @@ enrichment:
     vulners: true
     github: true
     cisa_kev: true
+    github_poc: true
