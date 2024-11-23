@@ -6,6 +6,7 @@ providers:
   GitHubAdvisoryAPI: true
   VulnersAPI: false
   CISAKEVAPI: true
+  RAPID7: true
 
 enrichment:
   sources:
