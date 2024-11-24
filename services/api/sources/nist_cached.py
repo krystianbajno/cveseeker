@@ -1,15 +1,19 @@
 from models.vulnerability import Vulnerability
-from services.search.nist_cache_manager import get_cve_data_cache
+from services.cache.cache_manager import CacheManager
 from services.vulnerabilities.factories.vulnerability_factory import VulnerabilityFactory, DEFAULT_VALUES
 from dateutil import parser as dateutil_parser
 from typing import List
 
 class NistCachedAPI:
-    def search(self, keywords: List[str], max_results: int) -> List[Vulnerability]:
-        cve_data_cache = get_cve_data_cache()
+    def __init__(self, cache_manager: CacheManager):
+        self.cache_manager = cache_manager
 
+    def search(self, keywords: List[str], max_results: int) -> List[Vulnerability]:
+        self.cache_manager.wait_for_data('nist_cached')
+        
+        cve_data_cache = self.cache_manager.get_data('nist_cached')
         if not cve_data_cache:
-            print("[!] CVE data is not available. Returning empty results.")
+            print("[!] NIST CVE data is not available.")
             return []
 
         vulnerabilities = []
@@ -60,7 +64,7 @@ class NistCachedAPI:
             vulnerabilities.append(
                 VulnerabilityFactory.make(
                     id=cve_id,
-                    url="https://github.com/fkie-cad/nvd-json-data-feeds/releases/latest/download/CVE-all.json.xz",
+                    url="https://nvd.nist.gov/vuln/detail/" + cve_id,
                     source=self.__class__.__name__,
                     date=date,
                     reference_urls=reference_urls,

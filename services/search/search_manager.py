@@ -1,6 +1,7 @@
 from typing import List, Dict
 from models.vulnerability_intelligence import VulnerabilityIntelligence
 from services.api.source import Source
+from services.cache.cache_manager import CacheManager
 from services.search.engine.collection import collect_results
 from services.search.engine.progress_factory import ProgressManagerFactory
 from services.search.engine.post_collection_pipeline import PostCollectionPipeline
@@ -11,6 +12,7 @@ class SearchManager:
         sources: List[Source], 
         enrichment_config: Dict, 
         progress_manager_factory: ProgressManagerFactory, 
+        cache_manager: CacheManager,
         max_retries: int = 3, 
         retry_delay: int = 5
     ):
@@ -19,6 +21,7 @@ class SearchManager:
         self.retry_delay = retry_delay
         self.enrichment_config = enrichment_config
         self.progress_manager_factory = progress_manager_factory
+        self.cache_manager = cache_manager
 
     def search(self, keywords: List[str], max_results: int, desired_severities=[]) -> List[VulnerabilityIntelligence]:
         print(f"[*] Initiating search for: \"{' '.join(keywords)}\" with a maximum of {max_results} results per source.\n")
@@ -46,7 +49,8 @@ class SearchManager:
 
         pipeline = PostCollectionPipeline(
             enrichment_config=self.enrichment_config,
-            desired_severities=desired_severities
+            desired_severities=desired_severities,
+            cache_manager=self.cache_manager
         )
         
         processed_results = pipeline.process(results, keywords)
