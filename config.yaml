@@ -12,8 +12,8 @@ providers:
 enrichment:
   sources:
     vulners: true
-    github: false
-    github_cached: true
+    trickest_cve_github: false
+    trickest_cve_github_cached: true
     cisa_kev: true
     github_poc: false
     github_poc_cached: true

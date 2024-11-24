@@ -12,6 +12,7 @@ from services.api.sources.vulners import VulnersAPI
 
 from typing import Dict
 
+from services.cache.cache_manager import CacheManager
 from services.search.engine.progress_factory import ProgressManagerFactory
 from services.search.search_manager import SearchManager
 from services.search.engine.progress_manager import ProgressManager
@@ -43,14 +44,22 @@ class SearchProvider:
         config = self.load_config()
         providers_config = config.get('providers', {})
         enrichment_config = config.get("enrichment", {})
-        
+
+        cache_manager = CacheManager(config)
+
         providers = []
-        
+
         for provider_name, enabled in providers_config.items():
             if enabled:
                 provider_class = self.provider_registry.get(provider_name)
                 if provider_class:
-                    providers.append(provider_class())
+                    if provider_name in [
+                            'NistCachedAPI', 
+                            'CISAKEVAPI'
+                        ]:
+                        providers.append(provider_class(cache_manager))
+                    else:
+                        providers.append(provider_class())
                 else:
                     print(f"[!] Provider '{provider_name}' not found in registry.")
             else:
@@ -59,9 +68,9 @@ class SearchProvider:
         if self.playwright_enabled:
             playwright_providers = []
             providers.extend(playwright_providers)
-            
+
         progress_manager_factory = ProgressManagerFactory()
-        self.search_service = SearchManager(providers, enrichment_config, progress_manager_factory=progress_manager_factory)
+        self.search_service = SearchManager(providers, enrichment_config, progress_manager_factory=progress_manager_factory, cache_manager=cache_manager)
         
     def load_config(self) -> Dict:
         try:
