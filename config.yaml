@@ -1,5 +1,6 @@
 providers:
   NistAPI: false
+  NistCachedAPI: true
   PacketStormSecurityAPI: true
   OpenCVEAPI: true
   ExploitDBAPI: true
@@ -11,6 +12,9 @@ providers:
 enrichment:
   sources:
     vulners: true
-    github: true
+    github: false
+    github_cached: true
     cisa_kev: true
-    github_poc: true
+    github_poc: false
+    github_poc_cached: true
+    nist_cached: true

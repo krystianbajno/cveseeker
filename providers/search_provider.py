@@ -4,6 +4,7 @@ from services.api.sources.cisa_kev import CISAKEVAPI
 from services.api.sources.exploitdb import ExploitDBAPI
 from services.api.sources.github_advisories import GitHubAdvisoryAPI
 from services.api.sources.nist import NistAPI
+from services.api.sources.nist_cached import NistCachedAPI
 from services.api.sources.opencve import OpenCVEAPI
 from services.api.sources.packetstormsecurity import PacketStormSecurityAPI
 from services.api.sources.rapid7 import RAPID7
@@ -11,8 +12,9 @@ from services.api.sources.vulners import VulnersAPI
 
 from typing import Dict
 
+from services.search.engine.progress_factory import ProgressManagerFactory
 from services.search.search_manager import SearchManager
-from services.search.engine.progress import ProgressManager
+from services.search.engine.progress_manager import ProgressManager
 
 class SearchProvider:
     def __init__(self, playwright_enabled=False, config_file='config.yaml'):
@@ -22,6 +24,7 @@ class SearchProvider:
 
         self.provider_registry = {
             'NistAPI': NistAPI,
+            "NistCachedAPI": NistCachedAPI,
             'PacketStormSecurityAPI': PacketStormSecurityAPI,
             'OpenCVEAPI': OpenCVEAPI,
             'ExploitDBAPI': ExploitDBAPI,
@@ -57,8 +60,8 @@ class SearchProvider:
             playwright_providers = []
             providers.extend(playwright_providers)
             
-        progress_manager = ProgressManager()
-        self.search_service = SearchManager(providers, enrichment_config, progress_manager=progress_manager)
+        progress_manager_factory = ProgressManagerFactory()
+        self.search_service = SearchManager(providers, enrichment_config, progress_manager_factory=progress_manager_factory)
         
     def load_config(self) -> Dict:
         try:
