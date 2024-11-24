@@ -8,9 +8,9 @@ A powerful, modular, and extensible vulnerability assessment and vulnerability i
 
 # Features
 
-- **Multi-Source Aggregation**: Fetch data from a variety of sources.
+- **Multi-Source Aggregation**: Fetch data from a variety of online sources.
 - **Enrichment Capabilities**: Enhance CVE details with severity metrics, reference URLs, available exploits, and mitigations, enabling you to produce actionable intelligence.
-- **Caching and Optimization**: Uses smart caching to minimize API requests and optimize performance, enabling you to use it in air-gapped networks.
+- **Caching and Optimization**: Uses smart caching, and reads straight from compressed archives to minimize API requests and optimize performance, enabling you to use it in air-gapped networks.
 - **Flexible Configuration**: Enable or disable providers and enrichment sources as needed.
 - **CLI Simplicity**: Intuitive command-line interface for streamlined operations.
 - **Reports**: Create vulnerability reports with ease.
