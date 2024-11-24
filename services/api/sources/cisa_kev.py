@@ -12,17 +12,17 @@ from services.vulnerabilities.factories.vulnerability_factory import Vulnerabili
 class CISAKEVAPI(Source):
     CACHE_DIR = "cache"
     CACHE_FILE = os.path.join(CACHE_DIR, "cisa_kev_cache.json")
-    CACHE_DURATION = 600
+    CACHE_DURATION = 600  # 10 minutes
+    CISA_URL = "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
 
     def __init__(self):
-        self.url = "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
         self.ensure_cache_dir()
 
     def ensure_cache_dir(self):
         if not os.path.exists(self.CACHE_DIR):
             try:
                 os.makedirs(self.CACHE_DIR)
-                print(f"[*] Created cache directory at '{self.CACHE_DIR}'.")
+                print(f"Created cache directory at '{self.CACHE_DIR}'.")
             except Exception as e:
                 print(f"[!] Failed to create cache directory '{self.CACHE_DIR}': {e}")
 
@@ -30,32 +30,30 @@ class CISAKEVAPI(Source):
         if os.path.exists(self.CACHE_FILE):
             cache_mtime = os.path.getmtime(self.CACHE_FILE)
             current_time = time.time()
-            if (current_time - cache_mtime) < self.CACHE_DURATION:
-                return True
+            return (current_time - cache_mtime) < self.CACHE_DURATION
         return False
 
     def load_cache(self) -> Dict:
         try:
             with open(self.CACHE_FILE, 'r', encoding='utf-8') as f:
-                data = json.load(f)
                 print("[*] Loaded CISA KEV catalog from cache.")
-                return data
+                return json.load(f)
         except Exception as e:
-            print(f"[!] Error reading CISA KEV cache: {e}")
+            print(f"[!] Error reading cache file '{self.CACHE_FILE}': {e}")
             return {}
 
     def update_cache(self, data: Dict):
         try:
             with open(self.CACHE_FILE, 'w', encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=4)
-                print("[+] CISA KEV catalog downloaded and cached.")
+                print(f"[+] Cache file '{self.CACHE_FILE}' updated successfully.")
         except Exception as e:
-            print(f"[!] Error updating CISA KEV cache: {e}")
+            print(f"[!] Error updating cache file '{self.CACHE_FILE}': {e}")
 
     def fetch_data(self) -> Dict:
         try:
             print("[*] Downloading CISA KEV catalog...")
-            response = httpx.get(self.url, timeout=15)
+            response = httpx.get(self.CISA_URL, timeout=15)
             if response.status_code == 200:
                 data = response.json()
                 self.update_cache(data)
@@ -72,17 +70,21 @@ class CISAKEVAPI(Source):
         else:
             return self.fetch_data()
 
-    def search(self, keywords: List[str], max_results: int) -> List[Vulnerability]:
-
+    def search(self, keywords: List[str], max_results: int = 10) -> List[Vulnerability]:
         vulnerabilities = []
+
         try:
             data = self.get_data()
             kev_vulnerabilities = data.get("vulnerabilities", [])
+            keyword_set = set(keyword.lower() for keyword in keywords)
 
             for item in kev_vulnerabilities:
                 cve_id = item.get("cveID")
-                
                 if not cve_id:
+                    continue
+
+                description = item.get("shortDescription", "N/A").lower()
+                if not any(keyword in description for keyword in keyword_set):
                     continue
 
                 date_added = item.get("dateAdded")
@@ -96,18 +98,22 @@ class CISAKEVAPI(Source):
                 reference_urls = [url.strip() for url in notes.split(" ; ") if url.strip()]
                 weaknesses = item.get("cwes", [])
 
-                vulnerability = VulnerabilityFactory.make(
-                    id=cve_id,
-                    source=self.__class__.__name__,
-                    url="https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
-                    date=date,
-                    reference_urls=reference_urls,
-                    description=item.get("shortDescription", "N/A"),
-                    vulnerable_components=[item.get("product", "N/A")],
-                    tags=[item.get("vendorProject", "N/A")],
-                    weaknesses=weaknesses
+                vulnerabilities.append(
+                    VulnerabilityFactory.make(
+                        id=cve_id,
+                        source=self.__class__.__name__,
+                        url="https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+                        date=date,
+                        reference_urls=reference_urls,
+                        description=item.get("shortDescription", "N/A"),
+                        vulnerable_components=[item.get("product", "N/A")],
+                        tags=[item.get("vendorProject", "N/A")],
+                        weaknesses=weaknesses
+                    )
                 )
-                vulnerabilities.append(vulnerability)
+
+                if max_results and len(vulnerabilities) >= max_results:
+                    break
 
         except Exception as e:
             print(f"[!] Error processing CISA KEV data: {e}")

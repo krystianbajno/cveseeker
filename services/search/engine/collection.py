@@ -1,34 +1,48 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import time
-from typing import List
+from typing import List, Callable
 from models.vulnerability import Vulnerability
 from services.api.source import Source
+from typing import Callable, Any
+import time
 
-def collect_from_source_with_retries(manager, source: Source, keywords: List[str], max_results: int) -> List[Vulnerability]:
-    attempts = 0
-    retry_delay = manager.retry_delay
-    while attempts <= manager.max_retries:
-        try:
-            results = source.search(keywords, max_results)
-            manager.progress_manager.increment_progress(
-                source.__class__.__name__, len(results), len(manager.sources)
-            )
-            return results
-        except Exception as e:
-            attempts += 1
-            if attempts > manager.max_retries:
-                raise e
-            print(f"[!] Error with source {source.__class__.__name__}, attempt {attempts}. Retrying in {retry_delay} seconds...")
-            time.sleep(retry_delay)
-            retry_delay *= 2
+def collect_from_source(
+    source: Source,
+    keywords: List[str],
+    max_results: int,
+    progress_callback: Callable[[str, int, int], None],
+    max_retries: int,
+    retry_delay: int
+) -> List[Vulnerability]:
+    def fetch():
+        results = source.search(keywords, max_results)
+        progress_callback(source.__class__.__name__, len(results))
+        return results
 
-def collect_results(manager, keywords: List[str], max_results: int) -> List[Vulnerability]:
+    return retry_with_backoff(fetch, source.__class__.__name__, retries=max_retries, delay=retry_delay)
+
+def collect_results(
+    sources: List[Source],
+    keywords: List[str],
+    max_results: int,
+    progress_callback: Callable[[str, int, int], None],
+    max_retries: int,
+    retry_delay: int
+) -> List[Vulnerability]:
     collected_results = []
-    with ThreadPoolExecutor(max_workers=256) as executor:
+
+    with ThreadPoolExecutor(max_workers=min(len(sources), 16)) as executor:
         futures = {
-            executor.submit(collect_from_source_with_retries, manager, source, keywords, max_results): source
-            for source in manager.sources
+            executor.submit(
+                collect_from_source,
+                source,
+                keywords,
+                max_results,
+                progress_callback,
+                max_retries,
+                retry_delay
+            ): source for source in sources
         }
+
         for future in as_completed(futures):
             source = futures[future]
             try:
@@ -36,4 +50,21 @@ def collect_results(manager, keywords: List[str], max_results: int) -> List[Vuln
                 collected_results.extend(results)
             except Exception as e:
                 print(f"[!] Error with source {source.__class__.__name__}: {e}")
+
     return collected_results
+
+def retry_with_backoff(action: Callable[[], Any], source: str, retries: int, delay: int) -> Any:
+    attempts = 0
+    current_delay = delay
+
+    while attempts <= retries:
+        try:
+            result = action()
+            return result
+        except Exception as e:
+            attempts += 1
+            if attempts > retries:
+                raise e
+            print(f"[!] Attempt {attempts} of {retries} for {source} failed. Retrying in {current_delay} seconds...")
+            time.sleep(current_delay)
+            current_delay *= 2

@@ -4,9 +4,25 @@
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkrystianbajno%2Fcveseeker.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fkrystianbajno%2Fcveseeker?ref=badge_shield)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkrystianbajno%2Fcveseeker.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2Fkrystianbajno%2Fcveseeker?ref=badge_shield&issueType=security)
 
-This tool functions similarly to SearchSploit, allowing to search for known vulnerabilities by utilizing keywords and integrating multiple online services. 
+A powerful, modular, and extensible vulnerability assessment and vulnerability intelligence tool searching for CVEs and exploits using keywords across multiple sources. It collects, analyzes, and enriches CVE data from multiple trusted sources, empowering security researchers, and organizations to keep vulnerabilities close and actions proactive.
 
-<img src="https://raw.githubusercontent.com/krystianbajno/krystianbajno/main/img/cveseekerino.png"/>
+# Features
+
+- **Multi-Source Aggregation**: Fetch data from a variety of sources.
+- **Enrichment Capabilities**: Enhance CVE details with severity metrics, reference URLs, available exploits, and mitigations, enabling you to produce actionable intelligence.
+- **Caching and Optimization**: Uses smart caching to minimize API requests and optimize performance, enabling you to use it in air-gapped networks.
+- **Flexible Configuration**: Enable or disable providers and enrichment sources as needed.
+- **CLI Simplicity**: Intuitive command-line interface for streamlined operations.
+- **Reports**: Create vulnerability reports with ease.
+
+# Use Case Scenarios
+
+- Research vulnerabilities and associated metadata.
+- Product vulnerability background checking.
+- Automate vulnerability triaging and reporting.
+- Gain insights for security monitoring and proactive threat mitigation.
+
+<img src="https://raw.githubusercontent.com/krystianbajno/krystianbajno/main/img/cveseekerino-6.png"/>
 
 # How to use
 ```bash
@@ -19,12 +35,12 @@ python3 cveseeker.py cve-2024
 python3 cveseeker.py cve-2024 --max-per-provider 2000 # max results per provider, default 100
 python3 cveseeker.py cve-2024 --report # generate CSV, JSON and HTML report
 python3 cveseeker.py cve-2024 --critical --high --medium --low # include critical, high, medium, and low severities
-
 ```
 
 # Sources
 - [www.exploit-db.com](https://www.exploit-db.com) (IMPLEMENTED)
 - [services.nvd.nist.gov](https://services.nvd.nist.gov/rest/json/cves/2.0?noRejected) (IMPLEMENTED)
+- [services.nvd.nist.gov/cached:mirror/fkie-cad/nvd-json-data-feeds](https://github.com/fkie-cad/nvd-json-data-feeds/releases/latest/download/CVE-all.json.xz) (IMPLEMENTED)
 - [www.opencve.io](https://www.opencve.io) (IMPLEMENTED)
 - [www.packetstormsecurity.com](https://packetstormsecurity.com) (IMPLEMENTED)
 - [vulners.com](https://vulners.com/search) (IMPLEMENTED)
@@ -32,7 +48,9 @@ python3 cveseeker.py cve-2024 --critical --high --medium --low # include critica
 - [www.rapid7.com](https://www.rapid7.com) (IMPLEMENTED)
 - [cve.mitre.org](https://cve.mitre.org/cve/search_cve_list.html) (WIP)
 - [github.com PoC](https://github.com/nomi-sec/PoC-in-GitHub)  (IMPLEMENTED)
+- [github.com PoC - Cached](https://github.com/nomi-sec/PoC-in-GitHub)  (IMPLEMENTED)
 - [github.com advisories](https://github.com/advisories) (IMPLEMENTED)
+- [github.com/trickest/cve - Cached](https://github.com/search?q=repo%3Atrickest%2Fcve%20cve-2024&type=code) (IMPLEMENTED)
 - [github.com/trickest/cve](https://github.com/search?q=repo%3Atrickest%2Fcve%20cve-2024&type=code) (IMPLEMENTED)
 
 # Reporting
@@ -47,3 +65,7 @@ python3 cveseeker.py smbghost --report
 
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkrystianbajno%2Fcveseeker.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fkrystianbajno%2Fcveseeker?ref=badge_large)
+
+
+## TODO:
+Full CVSSv2 support
