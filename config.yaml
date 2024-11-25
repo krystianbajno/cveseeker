@@ -1,3 +1,6 @@
+default_profile: stable
+cache_dir: "dataset"
+
 providers:
   NistAPI: false
   NistCachedAPI: true
@@ -18,3 +21,6 @@ enrichment:
     github_poc: false
     github_poc_cached: true
     nist_cached: true
+
+reload: false
+autoupdate: true

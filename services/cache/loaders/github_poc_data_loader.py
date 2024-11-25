@@ -5,32 +5,18 @@ import json
 from typing import Dict
 import httpx
 
+from services.cache.loaders.loader import ensure_cache_directory, is_cache_valid
 from terminal.cli import print_greyed_out
 
-CACHE_DIR = "dataset"
 REPO_URL = "https://github.com/nomi-sec/PoC-in-GitHub/archive/refs/heads/master.zip"
 CACHE_DURATION = 86400  # 1 day
 
-def load_github_poc_data() -> Dict[str, Dict]:
-    cache_dir = CACHE_DIR
+def load_github_poc_data(config) -> Dict[str, Dict]:
+    cache_dir = config.get("cache_dir")
     repo_zip_path = os.path.join(cache_dir, "PoC-in-GitHub.zip")
     data = {}
-
-    def ensure_cache_dir():
-        if not os.path.exists(cache_dir):
-            try:
-                os.makedirs(cache_dir)
-                print_greyed_out(f"[+] GITHUB_POC_DATA_LOADER: Created cache directory at '{cache_dir}'.")
-            except Exception as e:
-                print_greyed_out(f"[!] GITHUB_POC_DATA_LOADER: Failed to create cache directory '{cache_dir}': {e}")
-
-    def is_cache_valid():
-        if os.path.exists(repo_zip_path):
-            repo_mtime = os.path.getmtime(repo_zip_path)
-            current_time = time.time()
-            return (current_time - repo_mtime) < CACHE_DURATION
-        return False
-
+    name = "GITHUB_POC_DATA_LOADER"
+        
     def download_repo_as_zip():
         try:
             print_greyed_out("[*] GITHUB_POC_DATA_LOADER: Downloading GitHub PoC repository as zip...")
@@ -44,9 +30,9 @@ def load_github_poc_data() -> Dict[str, Dict]:
         except Exception as e:
             print_greyed_out(f"[!] GITHUB_POC_DATA_LOADER: Error downloading repository: {e}")
 
-    ensure_cache_dir()
+    ensure_cache_directory(cache_dir, name)
 
-    if not is_cache_valid():
+    if not is_cache_valid(config, repo_zip_path, CACHE_DURATION):
         download_repo_as_zip()
 
     if not os.path.exists(repo_zip_path):

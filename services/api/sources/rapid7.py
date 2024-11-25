@@ -11,10 +11,11 @@ from services.vulnerabilities.factories.vulnerability_factory import Vulnerabili
 
 
 class RAPID7(Source):
-    def __init__(self):
+    def __init__(self, config):
         self.base_url = "https://www.rapid7.com"
         self.search_url = f"{self.base_url}/db/"
         self.session = httpx.Client()
+        self.config = config
 
     def search(self, keywords: List[str], max_results=100) -> List[Vulnerability]:
         vulnerabilities = []

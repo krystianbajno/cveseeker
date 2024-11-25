@@ -8,8 +8,9 @@ from services.api.source import Source
 from services.vulnerabilities.factories.vulnerability_factory import VulnerabilityFactory, DEFAULT_VALUES
 
 class NistAPI(Source):
-    def __init__(self):
+    def __init__(self, config):
         self.url = "https://services.nvd.nist.gov/rest/json/cves/2.0?noRejected"
+        self.config = config
         
     def search(self, keywords: List[str], max_results) -> List[Vulnerability]:
         # scout what is possible

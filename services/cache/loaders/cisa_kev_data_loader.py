@@ -3,26 +3,15 @@ import time
 import json
 import httpx
 
+from services.cache.loaders.loader import ensure_cache_directory, is_cache_valid
 from terminal.cli import print_greyed_out
 
-def load_cisa_kev_data():
-    cache_dir = 'dataset'
+def load_cisa_kev_data(config):
+    cache_dir = config.get("cache_dir")
     cache_file = os.path.join(cache_dir, 'cisa_kev_cache.json')
     cache_duration = 600  # 10 minutes
-
-    if not os.path.exists(cache_dir):
-        try:
-            os.makedirs(cache_dir)
-            print_greyed_out(f"[+] CISA_KEV_DATA_LOADER: Created cache directory at '{cache_dir}'.")
-        except Exception as e:
-            print_greyed_out(f"[!] CISA_KEV_DATA_LOADER: Failed to create cache directory '{cache_dir}': {e}")
-
-    def is_cache_valid():
-        if os.path.exists(cache_file):
-            cache_mtime = os.path.getmtime(cache_file)
-            current_time = time.time()
-            return (current_time - cache_mtime) < cache_duration
-        return False
+    
+    name = "CISA_KEV_DATA_LOADER"
 
     def download_and_cache():
         try:
@@ -43,7 +32,9 @@ def load_cisa_kev_data():
             print_greyed_out(f"[!] CISA_KEV_DATA_LOADER: Error fetching CISA KEV data: {e}")
         return {}
 
-    if is_cache_valid():
+    ensure_cache_directory(cache_dir, name)
+
+    if is_cache_valid(config, cache_file, cache_duration):
         try:
             with open(cache_file, 'r', encoding='utf-8') as f:
                 data = json.load(f)

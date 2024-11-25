@@ -13,22 +13,22 @@ class CacheManager:
         self.cache_events = {}
         self.loading_threads = []
         self.load_caches()
-
+        
     def load_caches(self):
         providers_config = self.config.get('providers', {})
         enrichment_config = self.config.get('enrichment', {}).get('sources', {})
 
         provider_loaders = {
-            'NistCachedAPI': ('nist_cached', load_nist_data),
-            'CISAKEVAPI': ('cisa_kev', load_cisa_kev_data),
-            'GitHubCachedAPI': ('github_poc_cached', load_github_poc_data),
+            'NistCachedAPI': ('nist_cached', lambda: load_nist_data(self.config)),
+            'CISAKEVAPI': ('cisa_kev', lambda: load_cisa_kev_data(self.config)),
+            'GitHubCachedAPI': ('github_poc_cached', lambda: load_github_poc_data(self.config)),
         }
 
         enrichment_loaders = {
-            'nist_cached': load_nist_data,
-            'cisa_kev': load_cisa_kev_data,
-            'github_poc_cached': load_github_poc_data,
-            'trickest_cve_github_cached': load_trickest_cve_data,
+            'nist_cached': lambda: load_nist_data(self.config),
+            'cisa_kev': lambda: load_cisa_kev_data(self.config),
+            'github_poc_cached': lambda: load_github_poc_data(self.config),
+            'trickest_cve_github_cached': lambda: load_trickest_cve_data(self.config),
         }
 
         loaders_to_use = {}

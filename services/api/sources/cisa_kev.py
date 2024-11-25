@@ -6,8 +6,9 @@ from dateutil import parser as dateutil_parser
 from typing import List
 
 class CISAKEVAPI(Source):
-    def __init__(self, cache_manager: CacheManager):
+    def __init__(self, config, cache_manager: CacheManager):
         self.cache_manager = cache_manager
+        self.config = config
 
     def search(self, keywords: List[str], max_results: int = 10) -> List[Vulnerability]:
         vulnerabilities = []
@@ -15,6 +16,7 @@ class CISAKEVAPI(Source):
         self.cache_manager.wait_for_data('cisa_kev')
         
         data = self.cache_manager.get_data('cisa_kev')
+                
         if not data:
             print("[!] CISA KEV data is not available.")
             return []
@@ -27,9 +29,20 @@ class CISAKEVAPI(Source):
                 cve_id = item.get("cveID")
                 if not cve_id:
                     continue
-
+                
                 description = item.get("shortDescription", "N/A")
-                if not any(keyword in description.lower() for keyword in keyword_set):
+                notes = item.get("notes", "")
+                vendor_project = item.get("vendorProject", "N/A")
+                product = item.get("product", "N/A")
+                
+                # Check keywords in multiple fields
+                if not (
+                    any(keyword in description.lower() for keyword in keyword_set)
+                    or any(keyword in cve_id.lower() for keyword in keyword_set)
+                    or any(keyword in notes.lower() for keyword in keyword_set)
+                    or any(keyword in vendor_project.lower() for keyword in keyword_set)
+                    or any(keyword in product.lower() for keyword in keyword_set)
+                ):
                     continue
 
                 date_added = item.get("dateAdded")
@@ -39,12 +52,10 @@ class CISAKEVAPI(Source):
                 except Exception:
                     date = date_added or "N/A"
 
-                notes = item.get("notes", "")
+                # Extract reference URLs
                 reference_urls = [url.strip() for url in notes.split(" ; ") if url.strip()]
                 weaknesses = item.get("cwes", [])
-                product = item.get("product", "N/A")
-                vendor_project = item.get("vendorProject", "N/A")
-
+                
                 vulnerabilities.append(
                     VulnerabilityFactory.make(
                         id=cve_id,

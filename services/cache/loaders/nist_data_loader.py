@@ -4,26 +4,16 @@ import json
 import lzma
 import httpx
 
+from services.cache.loaders.loader import ensure_cache_directory, is_cache_valid
 from terminal.cli import print_greyed_out
 
-def load_nist_data():
-    cache_dir = 'dataset'
+def load_nist_data(config):
+    cache_dir = config.get("cache_dir")
     cache_file_compressed = os.path.join(cache_dir, 'CVE-all.json.xz')
     cache_duration = 86400  # 24 hours
-
-    if not os.path.exists(cache_dir):
-        try:
-            os.makedirs(cache_dir)
-            print_greyed_out(f"[+] NIST_DATA_LOADER: Created cache directory at '{cache_dir}'.")
-        except Exception as e:
-            print_greyed_out(f"[!] NIST_DATA_LOADER: Failed to create cache directory '{cache_dir}': {e}")
-
-    def is_cache_valid():
-        if os.path.exists(cache_file_compressed):
-            cache_mtime = os.path.getmtime(cache_file_compressed)
-            current_time = time.time()
-            return (current_time - cache_mtime) < cache_duration
-        return False
+    name = "NIST_DATA_LOADER"
+    
+    ensure_cache_directory(cache_dir, name)
 
     def download_and_cache():
         try:
@@ -42,7 +32,7 @@ def load_nist_data():
         except Exception as e:
             print_greyed_out(f"[!] Error downloading NVD CVE feed: {e}")
 
-    if not is_cache_valid():
+    if not is_cache_valid(config, cache_file_compressed, cache_duration):
         download_and_cache()
 
     try:

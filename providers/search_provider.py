@@ -10,18 +10,15 @@ from services.api.sources.packetstormsecurity import PacketStormSecurityAPI
 from services.api.sources.rapid7 import RAPID7
 from services.api.sources.vulners import VulnersAPI
 
-from typing import Dict
-
 from services.cache.cache_manager import CacheManager
 from services.search.engine.progress_factory import ProgressManagerFactory
 from services.search.search_manager import SearchManager
-from services.search.engine.progress_manager import ProgressManager
+from terminal.cli import print_greyed_out
 
 class SearchProvider:
-    def __init__(self, playwright_enabled=False, config_file='config.yaml'):
+    def __init__(self, config):
         self.search_service: SearchManager = None
-        self.playwright_enabled = playwright_enabled
-        self.config_file = config_file
+        self.config = config
 
         self.provider_registry = {
             'NistAPI': NistAPI,
@@ -41,7 +38,7 @@ class SearchProvider:
         return self.search_service
             
     def boot(self):
-        config = self.load_config()
+        config = self.config
         providers_config = config.get('providers', {})
         enrichment_config = config.get("enrichment", {})
 
@@ -54,32 +51,16 @@ class SearchProvider:
                 provider_class = self.provider_registry.get(provider_name)
                 if provider_class:
                     if provider_name in [
-                            'NistCachedAPI', 
-                            'CISAKEVAPI'
-                        ]:
-                        providers.append(provider_class(cache_manager))
+                        'NistCachedAPI', 
+                        'CISAKEVAPI'
+                    ]:
+                        providers.append(provider_class(config, cache_manager))
                     else:
-                        providers.append(provider_class())
+                        providers.append(provider_class(config))
                 else:
                     print(f"[!] Provider '{provider_name}' not found in registry.")
             else:
-                print(f"[-] Provider '{provider_name}' is disabled in configuration.")
-
-        if self.playwright_enabled:
-            playwright_providers = []
-            providers.extend(playwright_providers)
+                print_greyed_out(f"[-] Provider '{provider_name}' is disabled in configuration.")
 
         progress_manager_factory = ProgressManagerFactory()
         self.search_service = SearchManager(providers, enrichment_config, progress_manager_factory=progress_manager_factory, cache_manager=cache_manager)
-        
-    def load_config(self) -> Dict:
-        try:
-            with open(self.config_file, 'r') as f:
-                config = yaml.safe_load(f)
-                return config
-        except FileNotFoundError:
-            print(f"[!] Config file '{self.config_file}' not found. Using default settings.")
-            return {}
-        except yaml.YAMLError as exc:
-            print(f"[!] Error parsing config file: {exc}")
-            return {}

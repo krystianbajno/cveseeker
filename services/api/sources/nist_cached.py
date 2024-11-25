@@ -5,8 +5,9 @@ from dateutil import parser as dateutil_parser
 from typing import List
 
 class NistCachedAPI:
-    def __init__(self, cache_manager: CacheManager):
+    def __init__(self, config, cache_manager: CacheManager):
         self.cache_manager = cache_manager
+        self.config = config
 
     def search(self, keywords: List[str], max_results: int) -> List[Vulnerability]:
         self.cache_manager.wait_for_data('nist_cached')
