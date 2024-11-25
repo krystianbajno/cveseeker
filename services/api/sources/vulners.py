@@ -6,8 +6,9 @@ from services.api.source import Source
 from services.vulnerabilities.factories.vulnerability_factory import VulnerabilityFactory
 
 class VulnersAPI(Source):
-    def __init__(self):
+    def __init__(self, config):
         self.base_url = "https://vulners.com"
+        self.config = config
 
     def search(self, keywords: List[str], max_results: int) -> List[Vulnerability]:
         vulnerabilities = {}

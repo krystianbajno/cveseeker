@@ -12,13 +12,14 @@ A powerful, modular, and extensible vulnerability assessment and vulnerability i
 - **Enrichment Capabilities**: Enhance CVE details with severity metrics, reference URLs, available exploits, and mitigations, enabling you to produce actionable intelligence.
 - **Caching and Optimization**: Uses smart caching, and reads straight from compressed archives to minimize API requests and optimize performance, enabling you to use it in air-gapped networks.
 - **Flexible Configuration**: Enable or disable providers and enrichment sources as needed.
+- **Profiles**: Create profiles, for example "offline" that uses only offline resources, "normal" that uses online resources, "stable" that does not update automatically, and more.
 - **CLI Simplicity**: Intuitive command-line interface for streamlined operations.
 - **Reports**: Create vulnerability reports with ease.
 
 # Use Case Scenarios
 
+- Look up vulnerabilities for a specified product, version, identifier, and more.
 - Research vulnerabilities and associated metadata.
-- Product vulnerability background checking.
 - Automate vulnerability triaging and reporting.
 - Gain insights for security monitoring and proactive threat mitigation.
 
@@ -28,13 +29,22 @@ A powerful, modular, and extensible vulnerability assessment and vulnerability i
 ```bash
 pip3 install -r requirements.txt
 
+On first run, the offline dataset will be downloaded automatically. The default profile is stable, you can change it in config.yaml. The stable profile does not auto-update when cache duration passes, so it is manual work to run --autoupdate or --reload. Each provider has different cache duration. In order to use online providers and update automatically, use "normal" profile.
+
+In order to use only local resources, use offline profile.
+
 python3 cveseeker.py <keywords>
 python3 cveseeker.py windows smbv1
 python3 cveseeker.py windows remote code execution
 python3 cveseeker.py cve-2024
+python3 cveseeker.py cve-2024 --reload # Override force re-download the dataset on next run
+python3 cveseeker.py cve-2024 --autoupdate # Override allow auto-updating the dataset on next run
+python3 cveseeker.py cve-2024 --no-autoupdate # Override do not allow updating the dataset on next run
+python3 cveseeker.py cve-2024 --offline # offline mode - do not update, do not use online providers on next run. same as --profile offline
+python3 cveseeker.py cve-2024 --profile [normal, stable, offline, debug, ...] # select a profile. modify profiles.yaml to add more. Profiles modify config.
 python3 cveseeker.py cve-2024 --max-per-provider 2000 # max results per provider, default 100
 python3 cveseeker.py cve-2024 --report # generate CSV, JSON and HTML report
-python3 cveseeker.py cve-2024 --critical --high --medium --low # include critical, high, medium, and low severities
+python3 cveseeker.py cve-2024 --critical --high --medium --low # include critical, high, medium, or low severities
 ```
 
 # Sources

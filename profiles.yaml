@@ -1,0 +1,99 @@
+offline:
+  providers:
+    NistAPI: false
+    NistCachedAPI: true
+    PacketStormSecurityAPI: false
+    OpenCVEAPI: false
+    ExploitDBAPI: false
+    GitHubAdvisoryAPI: false
+    VulnersAPI: false
+    CISAKEVAPI: true
+    RAPID7: false
+
+  enrichment:
+      sources:
+        vulners: false
+        trickest_cve_github: false
+        trickest_cve_github_cached: true
+        cisa_kev: true
+        github_poc: false
+        github_poc_cached: true
+        nist_cached: true
+
+  autoupdate: false
+  reload: false
+
+normal:
+  providers:
+    NistAPI: false
+    NistCachedAPI: true
+    PacketStormSecurityAPI: true
+    OpenCVEAPI: true
+    ExploitDBAPI: true
+    GitHubAdvisoryAPI: true
+    VulnersAPI: false
+    CISAKEVAPI: true
+    RAPID7: true
+
+  enrichment:
+    sources:
+      vulners: true
+      trickest_cve_github: false
+      trickest_cve_github_cached: true
+      cisa_kev: true
+      github_poc: false
+      github_poc_cached: true
+      nist_cached: true
+
+  reload: false
+  autoupdate: true
+
+stable:
+  providers:
+    NistAPI: false
+    NistCachedAPI: true
+    PacketStormSecurityAPI: true
+    OpenCVEAPI: true
+    ExploitDBAPI: true
+    GitHubAdvisoryAPI: true
+    VulnersAPI: false
+    CISAKEVAPI: true
+    RAPID7: true
+
+  enrichment:
+    sources:
+      vulners: true
+      trickest_cve_github: false
+      trickest_cve_github_cached: true
+      cisa_kev: true
+      github_poc: false
+      github_poc_cached: true
+      nist_cached: true
+
+  reload: false
+  autoupdate: false
+
+debug:
+  providers:
+    NistAPI: false
+    NistCachedAPI: true
+    PacketStormSecurityAPI: false
+    OpenCVEAPI: false
+    ExploitDBAPI: false
+    GitHubAdvisoryAPI: false
+    VulnersAPI: false
+    CISAKEVAPI: false
+    RAPID7: false
+
+  enrichment:
+    sources:
+      vulners: false
+      trickest_cve_github: false
+      trickest_cve_github_cached: false
+      cisa_kev: false
+      github_poc: false
+      github_poc_cached: false
+      nist_cached: false
+
+  reload: false
+  autoupdate: false

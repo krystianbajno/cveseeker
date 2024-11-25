@@ -9,8 +9,9 @@ from services.api.source import Source
 from services.vulnerabilities.factories.vulnerability_factory import VulnerabilityFactory
 
 class OpenCVEAPI(Source):
-    def __init__(self):
+    def __init__(self, config):
         self.base_url = "https://app.opencve.io/cve"
+        self.config = config
     
     def __get_search_url(self, page, query):
         search_string = "+".join(query)    

@@ -10,8 +10,9 @@ from services.api.source import Source
 from services.vulnerabilities.factories.vulnerability_factory import VulnerabilityFactory
 
 class PacketStormSecurityAPI(Source):
-    def __init__(self):
+    def __init__(self, config):
         self.base_url = "https://packetstormsecurity.com"
+        self.config = config
     
     def __get_search_url(self, page, query):
         search_string = "+".join(query)

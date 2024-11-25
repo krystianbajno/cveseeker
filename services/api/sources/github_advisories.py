@@ -10,9 +10,10 @@ from services.api.source import Source
 from services.vulnerabilities.factories.vulnerability_factory import VulnerabilityFactory, DEFAULT_VALUES
 
 class GitHubAdvisoryAPI(Source):
-    def __init__(self):
+    def __init__(self, config):
         self.url = "https://github.com/advisories"
         self.session = httpx.Client()
+        self.config = config
         
     def search(self, keywords: List[str], max_results) -> List[Vulnerability]:
         vulnerabilities = []
