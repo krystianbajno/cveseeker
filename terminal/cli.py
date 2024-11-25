@@ -9,4 +9,4 @@ def print_configuration(profilename, configuration):
     print_greyed_out(f"Configuration:\n\n{yaml.dump(configuration, allow_unicode=True, default_flow_style=False)}")
 
 def print_wrong_profile(profiles):
-    print(f"[!] Hold on! You entered a wrong profile. You can add profiles in profiles.yaml. \n\nSelect one of the available profiles: {", ".join(profiles.keys())}")
+    print(f"[!] Hold on! You entered a wrong profile. You can add profiles in profiles.yaml. \n\nSelect one of the available profiles: {', '.join(profiles.keys())}")
