@@ -4,6 +4,8 @@
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkrystianbajno%2Fcveseeker.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fkrystianbajno%2Fcveseeker?ref=badge_shield)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkrystianbajno%2Fcveseeker.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2Fkrystianbajno%2Fcveseeker?ref=badge_shield&issueType=security)
 
+<img src="https://raw.githubusercontent.com/krystianbajno/krystianbajno/main/img/cveseeker-logo.png"/>
+
 A powerful, modular, and extensible vulnerability assessment and vulnerability intelligence tool searching for CVEs and exploits using keywords across multiple sources. It collects, analyzes, and enriches CVE data from multiple trusted sources, empowering security researchers, and organizations to keep vulnerabilities close and actions proactive.
 
 # Features
