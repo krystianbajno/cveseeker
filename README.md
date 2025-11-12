@@ -6,13 +6,13 @@
 
 <img src="https://raw.githubusercontent.com/krystianbajno/krystianbajno/main/img/cveseeker-logo.png"/>
 
-> **⚠️ IMPORTANT NOTICE**: CVESeeker is no longer under active development. This project has been superseded by [**Vulnripper**](https://github.com/baysec-eu/vulnripper) - a complete rewrite with significantly improved performance, expanded capabilities, and commercial database support maintained by Baysec.
+> **⚠️ IMPORTANT NOTICE**: cveseeker is no longer under active development. This project has been superseded by [**Vulnripper**](https://github.com/baysec-eu/vulnripper) - a complete rewrite with significantly improved performance, expanded capabilities, and commercial database support maintained by Baysec.
 >
 > **For new deployments, please use Vulnripper instead.**
 >
 > Vulnripper offers:
 > - 30-100x faster search performance with FTS5 indexing
-> - 922,000+ merged entries from 16 data sources (vs CVESeeker's limited sources)
+> - 922,000+ merged entries from 16 data sources (vs cveseeker's limited sources)
 > - Network scanning with nmap integration
 > - Agent-based collection for enterprise environments
 > - Daily database updates with 372,000+ vulnerabilities
