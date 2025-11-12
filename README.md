@@ -6,6 +6,24 @@
 
 <img src="https://raw.githubusercontent.com/krystianbajno/krystianbajno/main/img/cveseeker-logo.png"/>
 
+> **⚠️ IMPORTANT NOTICE**: CVESeeker is no longer under active development. This project has been superseded by [**Vulnripper**](https://github.com/baysec-eu/vulnripper) - a complete rewrite with significantly improved performance, expanded capabilities, and commercial database support maintained by Baysec.
+>
+> **For new deployments, please use Vulnripper instead.**
+>
+> Vulnripper offers:
+> - 30-100x faster search performance with FTS5 indexing
+> - 922,000+ merged entries from 16 data sources (vs CVESeeker's limited sources)
+> - Network scanning with nmap integration
+> - Agent-based collection for enterprise environments
+> - Daily database updates with 372,000+ vulnerabilities
+> - Professional CTI platform integration
+> - CVSS scoring, EPSS prioritization, CISA KEV tracking
+> - Exploit availability monitoring and weaponization analysis
+>
+> Learn more: https://github.com/baysec-eu/vulnripper
+
+---
+
 A powerful, modular, and extensible vulnerability assessment and vulnerability intelligence tool searching for CVEs and exploits using keywords across multiple sources. It collects, analyzes, and enriches CVE data from multiple trusted sources, empowering security researchers, and organizations to keep vulnerabilities close and actions proactive.
 
 # Features
@@ -75,9 +93,24 @@ python3 cveseeker.py smbghost --report
 <img src="https://raw.githubusercontent.com/krystianbajno/krystianbajno/main/img/cveseeker-html.png"/>
 
 
+## Baysec CTI Services
+
+Vulnripper is used by Baysec analysts in daily security operations. The Baysec CTI platform correlates vulnerability and exploit intelligence with threat actor intelligence, campaigns, malware families, and attack patterns.
+
+**Contact**: kontakt@baysec.eu | https://baysec.eu
+
+### Features
+- Real-time vulnerability tracking and exploit monitoring
+- Threat actor TTP correlation
+- Custom dashboards for trends and exploitation patterns
+- API access for SOAR, SIEM, vulnerability management
+- STIX/TAXII support
+- Knowledge graphs (CVEs, exploits, threats)
+
+### Integration
+OpenCTI connector available for Vulnripper subscribers. Enables automated ingestion, CVE enrichment, correlation with existing intelligence.
+
+---
+
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkrystianbajno%2Fcveseeker.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fkrystianbajno%2Fcveseeker?ref=badge_large)
-
-
-## TODO:
-Full CVSSv2 support
